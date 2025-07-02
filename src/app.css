@@ -1,1 +1,18 @@
 @import 'tailwindcss';
+
+@theme {
+    --color-background: #FEFBED;
+    --color-foreground: #59533A;
+    --font-serif: 'Libre Baskerville', serif;
+}
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(3px); }
+    75% { transform: translateX(-3px); }
+}

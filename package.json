@@ -41,6 +41,10 @@
 		]
 	},
 	"dependencies": {
-		"pocketbase": "^0.26.1"
+		"bits-ui": "^2.8.8",
+		"dayjs": "^1.11.13",
+		"lucide-svelte": "^0.523.0",
+		"pocketbase": "^0.26.1",
+		"svelte-autosize": "^1.1.5"
 	}
 }
