@@ -1,0 +1,69 @@
+<script lang="ts">
+	import dayjs from 'dayjs';
+	import { areAdjacentDays, throttle } from '$lib/utils';
+	import { decrypted, entries } from '$lib/pocketbase/index.svelte';
+	import EntryAccItem from './entry-acc-item.svelte';
+	import EntryStreak from './entry-streak.svelte';
+	import type { EntriesStoreItem } from '$lib/types';
+
+	let { entry }: { entry: EntriesStoreItem } = $props();
+
+	const decryptorFunction = $derived(decrypted.get(entry.id));
+	let cacheResult: string | null = $state(null);
+
+	async function getDecrypt() {
+		if (cacheResult) return cacheResult;
+		if (decryptorFunction) {
+			const res = await decryptorFunction();
+			cacheResult = res;
+			return res;
+		}
+		return null;
+	}
+
+	const throttledDecrypt = throttle(getDecrypt, 1000);
+
+	const streak = $derived.by(() => {
+		const current = entries.current?.findIndex((e) => e.id === entry.id);
+		if (!current) return 0;
+		const previous = entries.current?.filter((_, i) => i <= current).toReversed();
+
+		let streak = 1;
+
+		if (previous) {
+			for (let i = 0; i < previous.length; i++) {
+				const a = previous[i]?.created;
+				const b = previous[i + 1]?.created;
+				if (a && b) {
+					if (areAdjacentDays(a, b)) {
+						streak = streak + 1;
+					} else {
+						break;
+					}
+				}
+			}
+		}
+
+		return streak;
+	});
+</script>
+
+<EntryAccItem id={entry.id} hideContent={entry.loading} onmousemove={throttledDecrypt}>
+	{#snippet header()}
+		<div class="font-semibold">
+			{dayjs(entry.created).format('MMM D, YYYY')}
+		</div>
+		<div>
+			{#if entry.loading}Uploading...{/if}
+		</div>
+		<div class="flex-grow"></div>
+		<EntryStreak {streak} />
+	{/snippet}
+	{#snippet content()}
+		<div class="p-5">
+			{#await getDecrypt() then text}
+				{text}
+			{/await}
+		</div>
+	{/snippet}
+</EntryAccItem>

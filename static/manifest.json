@@ -1,0 +1,17 @@
+{
+	"short_name": "Dialock",
+	"name": "Dialock: Simple secure diary app",
+	"display": "standalone",
+	"icons": [
+		{
+			"src": "/favicon.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"id": "/?source=pwa",
+	"start_url": "/app/?source=pwa",
+	"scope": "/",
+	"theme_color": "#fefbed",
+	"background_color": "#fefbed"
+}

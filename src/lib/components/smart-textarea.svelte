@@ -3,6 +3,7 @@
 	import { onMount, tick } from 'svelte';
 	import { fly, slide } from 'svelte/transition';
 	import autosize from 'svelte-autosize';
+	import { updated } from '$app/state';
 
 	let { value = $bindable('') } = $props();
 
@@ -72,7 +73,7 @@
 	}
 
 	function update() {
-		// resizeTextarea();
+		resizeTextarea();
 		updateMirrorPosition();
 		if (textarea) {
 			const pos = textarea.selectionEnd;
@@ -96,6 +97,12 @@
 			typing.current = false;
 		};
 	});
+
+	$effect(() => {
+		console.log(value);
+		keyUpdate++;
+		update();
+	});
 </script>
 
 <div class="p-5">
@@ -106,9 +113,8 @@
 		rows="1"
 		placeholder="Start typing…"
 		class={[
-			'block w-full resize-none rounded font-serif text-base/7 placeholder-gray-400 outline-none'
+			'block min-h-20 w-full resize-none rounded font-serif text-base/7 placeholder-gray-400 outline-none'
 		]}
-		use:autosize
 		onkeydown={() => {
 			keyUpdate++;
 			if (focused.current === false) {
