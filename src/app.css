@@ -1,18 +1,195 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
+
+:root {
+	--background: #fefbed;
+	--foreground: #59533a;
+	--primary: #59533a;
+	--border: #998e63;
+	--outline: #59533a;
+}
+
+.dark {
+	--background: #2b281b;
+	--foreground: #e6e2d3;
+	--primary: #fceba4;
+	--border: #696143;
+	--outline: #fceba4;
+}
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-primary: var(--primary);
+	--color-border: var(--border);
+	--color-outline: var(--outline);
+}
 
 @theme {
-    --color-background: #FEFBED;
-    --color-foreground: #59533A;
-    --font-serif: 'Libre Baskerville', serif;
+	--default-font-family: 'DM Sans', sans-serif;
+	--font-serif: 'Libre Baskerville', serif;
+	--animate-accordion-down: accordion-down 0.2s ease-out;
+	--animate-accordion-up: accordion-up 0.2s ease-out;
+	--animate-caret-blink: caret-blink 1s ease-out infinite;
+	--animate-scale-in: scale-in 0.2s ease;
+	--animate-scale-out: scale-out 0.15s ease;
+	--animate-fade-in: fade-in 0.2s ease;
+	--animate-fade-out: fade-out 0.15s ease;
+	--animate-enter-from-left: enter-from-left 0.2s ease;
+	--animate-enter-from-right: enter-from-right 0.2s ease;
+	--animate-exit-to-left: exit-to-left 0.2s ease;
+	--animate-exit-to-right: exit-to-right 0.2s ease;
 }
+
+/* .dark {
+	@theme {
+		--color-background: #59533a;
+		--color-foreground: #fefbed;
+		--color-border: #998e63;
+		--color-outline: #59533a;
+	}
+} */
+
+@keyframes accordion-down {
+	from {
+		height: 0;
+	}
+
+	to {
+		height: var(--bits-accordion-content-height);
+	}
+}
+
+@keyframes accordion-up {
+	from {
+		height: var(--bits-accordion-content-height);
+	}
+
+	to {
+		height: 0;
+	}
+}
+
+@keyframes caret-blink {
+	0%,
+	70%,
+	100% {
+		opacity: 1;
+	}
+
+	20%,
+	50% {
+		opacity: 0;
+	}
+}
+
+@keyframes enter-from-right {
+	from {
+		opacity: 0;
+		transform: translateX(200px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes enter-from-left {
+	from {
+		opacity: 0;
+		transform: translateX(-200px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes exit-to-right {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translateX(200px);
+	}
+}
+
+@keyframes exit-to-left {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translateX(-200px);
+	}
+}
+
+@keyframes scale-in {
+	from {
+		opacity: 0;
+		transform: rotateX(-10deg) scale(0.9);
+	}
+
+	to {
+		opacity: 1;
+		transform: rotateX(0deg) scale(1);
+	}
+}
+
+@keyframes scale-out {
+	from {
+		opacity: 1;
+		transform: rotateX(0deg) scale(1);
+	}
+
+	to {
+		opacity: 0;
+		transform: rotateX(-10deg) scale(0.95);
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fade-out {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+}
+
 @layer base {
-  body {
-    @apply bg-background text-foreground;
-  }
+	body {
+		@apply bg-background text-foreground;
+	}
 }
 
 @keyframes wiggle {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(3px); }
-    75% { transform: translateX(-3px); }
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(3px);
+	}
+	75% {
+		transform: translateX(-3px);
+	}
 }
