@@ -6,6 +6,7 @@
 
 ## Stack
 - Svelte(kit)
+- Typescript
 - Tailwind
 - Pocketbase
 
