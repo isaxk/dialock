@@ -87,7 +87,7 @@
 		<SettingsItem title="Color Scheme" description="Customize how the app appears.">
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger
-					class="bg-background border-border hover:bg-primary/5 flex h-max w-max items-center gap-2 rounded-lg border px-3 py-2 transition-all"
+					class="bg-background border-border hover:bg-primary/5 flex h-max w-max items-center  rounded-lg border px-3 py-2 transition-all"
 				>
 					{#if mode.current === 'light'}
 						<SunIcon size={20} />
@@ -95,7 +95,9 @@
 						<MoonIcon size={20} />
 					{/if}
 
-					<div class="flex-grow text-left">Select <span class="hidden sm:block">Theme</span></div>
+					<div class="w-full flex-grow pl-2 text-left">
+						Select <span class="hidden sm:inline">Theme</span>
+					</div>
 					<ChevronDownIcon size={16} />
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Portal>
@@ -209,7 +211,6 @@
 		<div class="border-border mt-5 flex items-center gap-3 border-t pt-5">
 			<div class="flex-grow">
 				<div class="font-serif text-2xl">Dialock</div>
-				<div class="text-base">v0.0.1</div>
 			</div>
 			<div>
 				<div class="flex justify-end gap-3">
