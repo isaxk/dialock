@@ -13,6 +13,10 @@
 	$inspect(user.current);
 </script>
 
+<svelte:head>
+	<title>Dialock</title>
+</svelte:head>
+
 <ModeWatcher />
 
 {@render children()}
