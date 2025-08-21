@@ -41,7 +41,7 @@
 			{#each entries.current as entry (entry.id)}
 				<DiaryEntry {entry} />
 			{/each}
-			{#if !entries.current.some((entry) => dayjs(entry.created).isSame(now, 'minute'))}
+			{#if !entries.current.some((entry) => dayjs(entry.created).isSame(now, 'second'))}
 				<EntryAccItem forceFullOpacity id="today">
 					{#snippet header()}
 						<div class={['w-full text-left transition-all']}>

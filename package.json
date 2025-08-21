@@ -48,6 +48,7 @@
 		"lucide-svelte": "^0.523.0",
 		"mode-watcher": "^1.1.0",
 		"pocketbase": "^0.26.1",
+		"posthog-js": "^1.260.1",
 		"svelte-autosize": "^1.1.5",
 		"tw-animate-css": "^1.3.6"
 	}
