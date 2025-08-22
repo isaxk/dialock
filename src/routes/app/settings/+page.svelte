@@ -9,7 +9,7 @@
 	import Textarea from '$lib/components/ui/textarea.svelte';
 	import JsonLink from '$lib/components/util/json-link.svelte';
 	import { db, decrypted, entries, user } from '$lib/pocketbase/index.svelte';
-	import { DropdownMenu, Portal } from 'bits-ui';
+	import { DropdownMenu } from 'bits-ui';
 	import dayjs from 'dayjs';
 	import {
 		ArrowLeft,
@@ -23,7 +23,6 @@
 		Trash2
 	} from 'lucide-svelte';
 	import { mode, resetMode, setMode } from 'mode-watcher';
-	import { onMount } from 'svelte';
 	import { MediaQuery, type SvelteMap } from 'svelte/reactivity';
 
 	const md = new MediaQuery('(min-width: 768px)');

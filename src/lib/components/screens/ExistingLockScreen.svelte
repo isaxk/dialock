@@ -1,14 +1,13 @@
 <script>
-	import { LogOut, Lock } from 'lucide-svelte';
+	import { Lock } from 'lucide-svelte';
 	import FlexColWide from '../stacks/flex-col-wide.svelte';
 	import Button from '../ui/button.svelte';
 	import { db, incorrectPassword, user } from '$lib/pocketbase/index.svelte';
-	import IconHeader from '../blocks/icon-header.svelte';
+	import IconHeader from '../header/icon-header.svelte';
 	import FlexColThin from '../stacks/flex-col-thin.svelte';
 	import FlexThin from '../stacks/flex-thin.svelte';
 	import Input from '../ui/input.svelte';
 	import Wiggler from '../ui/wiggler.svelte';
-	import FlexCenter from '../stacks/flex-center.svelte';
 	import { fade } from 'svelte/transition';
 
 	let value = $state('');
