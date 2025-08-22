@@ -1,11 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import FlexCenter from '$lib/components/stacks/flex-center.svelte';
-	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
 	import { db, diaryUnlocked, user } from '$lib/pocketbase/index.svelte';
-	import { onMount, type Snippet } from 'svelte';
-	import { fade } from 'svelte/transition';
+	import { type Snippet } from 'svelte';
 	import type { PageData } from './$types';
 	import Button from '$lib/components/ui/button.svelte';
 

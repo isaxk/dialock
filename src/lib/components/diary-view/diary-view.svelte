@@ -6,8 +6,8 @@
 	import DiaryEntry from './diary-entry.svelte';
 	import { ArrowUp, XIcon } from 'lucide-svelte';
 	import { ignoreScroll, typing, value } from '$lib/state.svelte';
-	import SmartTextarea from '../smart-textarea.svelte';
-	import { onMount, untrack } from 'svelte';
+	import SmartTextarea from '$lib/components/ui/smart-textarea.svelte';
+	import { onMount } from 'svelte';
 	import DiaryViewContainer from './diary-view-container.svelte';
 	import EntryAccItem from './entry-acc-item.svelte';
 	import Button from '../ui/button.svelte';

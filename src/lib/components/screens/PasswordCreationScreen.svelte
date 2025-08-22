@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Lock } from 'lucide-svelte';
-	import IconHeader from '../blocks/icon-header.svelte';
+	import IconHeader from '../header/icon-header.svelte';
 	import FlexColThin from '../stacks/flex-col-thin.svelte';
 	import FlexColWide from '../stacks/flex-col-wide.svelte';
 	import Input from '../ui/input.svelte';
