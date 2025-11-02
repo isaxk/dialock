@@ -4,6 +4,7 @@
 	import { fly, slide } from 'svelte/transition';
 	import autosize from 'svelte-autosize';
 	import { updated } from '$app/state';
+	import { scrollY } from 'svelte/reactivity/window';
 
 	let { value = $bindable('') } = $props();
 
@@ -50,21 +51,31 @@
 		const H = window.innerHeight;
 
 		// safe band
-		const safeTop = H * 0.3;
-		const safeBottom = H * 0.7;
+		const safeTop = H * 0.1;
+		const safeBottom = H * 0.8;
 
 		// only scroll if caret is above safeTop or below safeBottom
 		if (top < safeTop || top > safeBottom) {
 			let delta = 0;
 			if (top < safeTop) {
-				delta = top - H * 0.3;
+				delta = top - H * 0.1;
 			}
 			if (top > safeBottom) {
-				delta = top - H * 0.7;
+				delta = top - H * 0.8;
+			}
+
+			console.log(window.pageYOffset + delta);
+
+			let toScrollTop = window.pageYOffset + delta;
+			let currentScrollTop = window.pageYOffset;
+
+			console.log('currentScrollTop, toScrollTop', currentScrollTop, toScrollTop);
+
+			if (toScrollTop !== 0) {
+				// customAnimateScroll(currentScrollTop, toScrollTop);
 			}
 
 			ignoreScroll.current = true;
-			window.scrollTo({ top: window.pageYOffset + delta, behavior: 'smooth' });
 			clearTimeout(timeout);
 			timeout = window.setTimeout(() => {
 				ignoreScroll.current = false;
@@ -72,9 +83,31 @@
 		}
 	}
 
+	function customAnimateScroll(current: number, to: number) {
+		const diff = to - current;
+		console.log(diff);
+		const duration = 200;
+		const step = Math.abs(diff / duration);
+
+		let start: number | null = null;
+		function animate(timestamp: number) {
+			if (!start) start = timestamp;
+			const progress = timestamp - start;
+			window.scrollTo({ top: current + step * progress });
+			if (progress < duration) {
+				window.requestAnimationFrame(animate);
+			} else {
+				console.log(window.pageYOffset);
+			}
+		}
+		window.requestAnimationFrame(animate);
+	}
+
+	$inspect(scrollY.current);
+
 	function update() {
-		resizeTextarea();
-		updateMirrorPosition();
+		// resizeTextarea();
+		// updateMirrorPosition();
 		if (textarea) {
 			const pos = textarea.selectionEnd;
 			const mirrorText = value.slice(0, pos);
@@ -82,7 +115,7 @@
 		} else {
 			mirrorContent = '';
 		}
-		scrollCaretIfNeeded();
+		// scrollCaretIfNeeded();
 	}
 
 	onMount(() => {
@@ -98,14 +131,13 @@
 		};
 	});
 
-	$effect(() => {
-		console.log(value);
-		keyUpdate++;
-		update();
-	});
+	// $effect(() => {
+	// 	keyUpdate++;
+	// 	update();
+	// });
 </script>
 
-<div class="p-5">
+<div class="flex-grow p-5">
 	<textarea
 		bind:this={textarea}
 		bind:value
@@ -113,15 +145,14 @@
 		rows="1"
 		placeholder="Start typing…"
 		class={[
-			'block min-h-20 w-full resize-none rounded font-serif text-base/7 placeholder-gray-400 outline-none'
+			'block h-full min-h-96 w-full resize-none rounded font-serif text-base/7 placeholder-gray-400 outline-none'
 		]}
 		onkeydown={() => {
 			keyUpdate++;
-			if (focused.current === false) {
-				setTimeout(update, 20);
-			} else {
-				setTimeout(update, 50);
-			}
+			setTimeout(() => {
+				update();
+			}, 100);
+
 			focused.current = true;
 			typing.current = true;
 		}}
@@ -138,9 +169,9 @@
 			}, 50);
 		}}
 		onclick={() => {
-			if (focused.current && typing.current) {
+			setTimeout(() => {
 				update();
-			}
+			}, 20);
 		}}
 	></textarea>
 </div>

@@ -5,6 +5,7 @@
 	import { type Snippet } from 'svelte';
 	import type { PageData } from './$types';
 	import Button from '$lib/components/ui/button.svelte';
+	import Loading from '$lib/components/screens/Loading.svelte';
 
 	let { children, data }: { children: Snippet; data: PageData } = $props();
 
@@ -36,4 +37,6 @@
 		</div>
 		<div class="fixed bottom-6">PWA Installed</div>
 	</div>
+{:else}
+	<Loading></Loading>
 {/if}

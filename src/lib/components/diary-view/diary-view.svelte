@@ -37,7 +37,7 @@
 
 <DiaryViewContainer>
 	{#if entries.current}
-		<Accordion.Root bind:value={accordionVal} type="single">
+		<Accordion.Root bind:value={accordionVal} type="single" class="flex h-full flex-col">
 			{#each entries.current as entry (entry.id)}
 				<DiaryEntry {entry} />
 			{/each}

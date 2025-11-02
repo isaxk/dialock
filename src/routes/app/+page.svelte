@@ -8,6 +8,7 @@
 	import FlexColWide from '$lib/components/stacks/flex-col-wide.svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import { LogOut } from 'lucide-svelte';
+	import Loading from '$lib/components/screens/Loading.svelte';
 </script>
 
 {#if user.current}
@@ -35,5 +36,9 @@
 				/>
 			</FlexCenter>
 		</FlexColWide>
+	{:else}
+		<Loading />
 	{/if}
+{:else}
+	<Loading />
 {/if}

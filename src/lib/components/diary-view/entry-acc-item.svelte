@@ -20,7 +20,10 @@
 	} = $props();
 </script>
 
-<Accordion.Item value={id} class={['border-foreground/20 group border-b last:border-none']}>
+<Accordion.Item
+	value={id}
+	class={['border-foreground/20 group flex-grow border-b last:border-none']}
+>
 	<Accordion.Header class="bg-background sticky top-16 w-full">
 		<Accordion.Trigger
 			{onmousemove}
