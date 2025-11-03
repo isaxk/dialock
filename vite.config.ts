@@ -6,6 +6,6 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit(), devtoolsJson()],
 	server: {
-		allowedHosts: ['powers-frequencies-flower-cyber.trycloudflare.com']
+		allowedHosts: ['network-sofa-personalized-respond.trycloudflare.com']
 	}
 });
