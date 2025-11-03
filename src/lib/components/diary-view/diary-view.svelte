@@ -54,7 +54,7 @@
 							<div class="">
 								{dayjs(entries.current?.find((entry) => entry.today)?.created ?? undefined)
 									.tz(user.current?.time_zone ?? 'Europe/London')
-									.format('MMM D, YYYY HH:mm')}
+									.format('MMM D, YYYY')}
 							</div>
 							<div class="flex items-center gap-1 text-sm">
 								{#if todayLoading.current}

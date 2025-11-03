@@ -53,7 +53,7 @@
 		<div class="font-semibold">
 			{dayjs(entry.created)
 				.tz(user.current?.time_zone ?? 'Europe/London')
-				.format('MMM D, YYYY HH:mm')}
+				.format('MMM D, YYYY')}
 		</div>
 		<div>
 			{#if entry.loading}Uploading...{/if}
