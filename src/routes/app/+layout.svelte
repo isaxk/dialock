@@ -19,7 +19,6 @@
 	});
 
 	$effect(() => {
-		console.log(diaryUnlocked, page.url.pathname);
 		if (!diaryUnlocked.current && page.url.pathname !== '/app') {
 			goto('/app');
 		}

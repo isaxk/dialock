@@ -114,6 +114,7 @@ export type UsersRecord = {
 	updated?: IsoDateString;
 	verified?: boolean;
 	entry_template?: string;
+	time_zone?: string;
 };
 
 // Response types include system fields and match responses from the PocketBase API

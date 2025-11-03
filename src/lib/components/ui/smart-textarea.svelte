@@ -6,7 +6,7 @@
 	import { updated } from '$app/state';
 	import { scrollY } from 'svelte/reactivity/window';
 
-	let { value = $bindable('') } = $props();
+	let { value = $bindable(''), onkeyup } = $props();
 
 	let textarea: HTMLTextAreaElement;
 	let mirror: HTMLDivElement;
@@ -64,12 +64,8 @@
 				delta = top - H * 0.8;
 			}
 
-			console.log(window.pageYOffset + delta);
-
 			let toScrollTop = window.pageYOffset + delta;
 			let currentScrollTop = window.pageYOffset;
-
-			console.log('currentScrollTop, toScrollTop', currentScrollTop, toScrollTop);
 
 			if (toScrollTop !== 0) {
 				// customAnimateScroll(currentScrollTop, toScrollTop);
@@ -147,6 +143,9 @@
 		class={[
 			'block h-full min-h-96 w-full resize-none rounded font-serif text-base/7 placeholder-gray-400 outline-none'
 		]}
+		onkeypress={() => {
+			onkeyup();
+		}}
 		onkeydown={() => {
 			keyUpdate++;
 			setTimeout(() => {

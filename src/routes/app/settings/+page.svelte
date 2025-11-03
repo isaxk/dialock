@@ -40,7 +40,6 @@
 			};
 		});
 		const parsed = await Promise.all(promises);
-		console.log(parsed);
 
 		// Create CSV header and content
 		let csv = 'date,text\n';

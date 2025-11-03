@@ -1,7 +1,7 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
 	import { areAdjacentDays, throttle } from '$lib/utils';
-	import { decrypted, entries } from '$lib/pocketbase/index.svelte';
+	import { decrypted, entries, user } from '$lib/pocketbase/index.svelte';
 	import EntryAccItem from './entry-acc-item.svelte';
 	import EntryStreak from './entry-streak.svelte';
 	import type { EntriesStoreItem } from '$lib/types';
@@ -51,7 +51,9 @@
 <EntryAccItem id={entry.id} hideContent={entry.loading} onmousemove={throttledDecrypt}>
 	{#snippet header()}
 		<div class="font-semibold">
-			{dayjs(entry.created).format('MMM D, YYYY')}
+			{dayjs(entry.created)
+				.tz(user.current?.time_zone ?? 'Europe/London')
+				.format('MMM D, YYYY HH:mm')}
 		</div>
 		<div>
 			{#if entry.loading}Uploading...{/if}
