@@ -52,7 +52,7 @@
 	{#snippet header()}
 		<div class="font-semibold">
 			{dayjs(entry.created)
-				.tz(user.current?.time_zone ?? 'Europe/London')
+				.tz(user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London')
 				.format('MMM D, YYYY')}
 		</div>
 		<div>

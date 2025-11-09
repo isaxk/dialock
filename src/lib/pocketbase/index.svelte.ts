@@ -39,6 +39,14 @@ export const password: {
 });
 
 export const db = {
+	updateTimeZone: async () => {
+		if (!user.current) return;
+		const tz = dayjs.tz.guess() ?? 'Europe/London';
+		user.current.time_zone = tz;
+		await pb.collection('users').update(user.current.id, {
+			time_zone: tz
+		});
+	},
 	authStore: async () => {
 		if (pb.authStore.isValid && pb.authStore.record) {
 			user.current = pb.authStore.record as unknown as UsersRecord;
@@ -50,11 +58,7 @@ export const db = {
 					if (d) {
 						user.current = d as unknown as UsersRecord;
 						if (!d.time_zone) {
-							const tz = dayjs.tz.guess();
-							user.current.time_zone = tz;
-							pb.collection('users').update(d.id, {
-								time_zone: tz
-							});
+							db.updateTimeZone();
 						}
 					} else {
 						user.current = null;
@@ -70,46 +74,23 @@ export const db = {
 		}
 
 		async function getEntries() {
+			if (!user.current?.time_zone) {
+				await db.updateTimeZone();
+			}
+			const timezone = user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London';
 			return pb
 				.collection('entries')
 				.getFullList(200, {
 					sort: 'created'
 				})
 				.then(async (records) => {
-					console.log(
-						dayjs().format('YYYY-MM-DD HH:mm:ss'),
-						dayjs
-							.utc()
-							.tz(user.current?.time_zone ?? 'Europe/London')
-							.format('YYYY-MM-DD HH:mm:ss')
-					);
 					entries.current = records.map((r) => {
-						console.log(user.current);
-						console.log(user.current?.time_zone ?? 'Europe/London');
-						console.log(
-							'Entry time',
-							dayjs(r.created)
-								.tz(user.current?.time_zone ?? 'Europe/London')
-								.format()
-						);
-						console.log(
-							'Now time',
-							dayjs()
-								.tz(user.current?.time_zone ?? 'Europe/London')
-								.format()
-						);
-						console.log(
-							'isSameDay',
-							dayjs(r.created)
-								.tz(user.current?.time_zone ?? 'Europe/London')
-								.isSame(dayjs().tz(user.current?.time_zone ?? 'Europe/London'), 'day')
-						);
 						return {
 							...r,
 							loading: false,
 							today: dayjs(r.created)
-								.tz(user.current?.time_zone ?? 'Europe/London')
-								.isSame(dayjs().tz(user.current?.time_zone ?? 'Europe/London'), 'day')
+								.tz(user.current?.time_zone ?? timezone)
+								.isSame(dayjs().tz(user.current?.time_zone ?? timezone), 'day')
 						};
 					});
 				});
@@ -205,6 +186,9 @@ export const db = {
 			value.current = user.current?.entry_template ?? '';
 
 			return;
+		}
+		if (!user.current?.time_zone) {
+			await db.updateTimeZone();
 		}
 		incorrectPassword.current = false;
 		const key = await deriveKey(pass, user.current.salt);

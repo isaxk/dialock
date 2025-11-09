@@ -53,7 +53,7 @@
 						<div class="flex items-center gap-2">
 							<div class="">
 								{dayjs(entries.current?.find((entry) => entry.today)?.created ?? undefined)
-									.tz(user.current?.time_zone ?? 'Europe/London')
+									.tz(user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London')
 									.format('MMM D, YYYY')}
 							</div>
 							<div class="flex items-center gap-1 text-sm">
