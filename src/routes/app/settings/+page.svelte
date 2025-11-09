@@ -9,7 +9,7 @@
 	import Textarea from '$lib/components/ui/textarea.svelte';
 	import JsonLink from '$lib/components/util/json-link.svelte';
 	import { db, decrypted, entries, user } from '$lib/pocketbase/index.svelte';
-	import { DropdownMenu } from 'bits-ui';
+	import { DropdownMenu, Switch } from 'bits-ui';
 	import dayjs from 'dayjs';
 	import {
 		ArrowLeft,
@@ -52,6 +52,7 @@
 	}
 
 	let parsed: { json: { date: string; text: string }[]; csv: string } | undefined = $state();
+
 	$effect(() => {
 		getAllEntries(decrypted).then((data) => {
 			parsed = data;
@@ -119,6 +120,21 @@
 					</DropdownMenu.Content>
 				</DropdownMenu.Portal>
 			</DropdownMenu.Root>
+		</SettingsItem>
+		<SettingsItem title="Autosave" description="Automatically save your diary entry drafts">
+			<Switch.Root
+				onCheckedChange={(checked) => {
+					db.updateGenericSettings({ manual_save: !checked });
+				}}
+				checked={!(user.current?.manual_save ?? false)}
+				id="dnd"
+				name="hello"
+				class="focus-visible:ring-foreground focus-visible:ring-offset-background data-[state=checked]:bg-primary data-[state=unchecked]:bg-border/20 data-[state=unchecked]:shadow-mini-inset dark:data-[state=checked]:bg-foreground peer inline-flex h-[28px] min-h-[28px] w-[50px] shrink-0 cursor-pointer items-center rounded-full px-[3px] transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+			>
+				<Switch.Thumb
+					class="bg-background data-[state=unchecked]:shadow-mini dark:border-background/30 dark:bg-foreground dark:shadow-popover pointer-events-none block size-[22px] shrink-0 rounded-full transition-transform data-[state=checked]:translate-x-5.5 data-[state=unchecked]:translate-x-0 dark:border dark:data-[state=unchecked]:border"
+				/>
+			</Switch.Root>
 		</SettingsItem>
 		<SettingsItem title="Export Diary" description="Exported diary is not encrypted.">
 			{#if parsed && md.current}

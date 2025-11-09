@@ -4,7 +4,7 @@
 	import dayjs from 'dayjs';
 	import { slide } from 'svelte/transition';
 	import DiaryEntry from './diary-entry.svelte';
-	import { ArrowUp, Check, XIcon } from 'lucide-svelte';
+	import { AlertCircle, ArrowUp, Check, Save, XIcon } from 'lucide-svelte';
 	import { ignoreScroll, todayLoading, typing, value } from '$lib/state.svelte';
 	import SmartTextarea from '$lib/components/ui/smart-textarea.svelte';
 	import { onMount } from 'svelte';
@@ -13,18 +13,56 @@
 	import Button from '../ui/button.svelte';
 	import { debounce } from '$lib/utils';
 	import { Circle } from 'svelte-loading-spinners';
+	import Alert from '../ui/alert.svelte';
+	import { beforeNavigate } from '$app/navigation';
 
 	let now = $state(dayjs());
 	let accordionVal = $state('today');
+	let unsavedChanges = $state(false);
 
-	const debouncedUpdate = debounce(() => db.createOrUpdateEntry(value.current ?? ''), 1000);
+	const debouncedUpdate = debounce(() => {
+		db.createOrUpdateEntry(value.current ?? '').then(() => {
+			unsavedChanges = false;
+		});
+	}, 2500);
+
+	beforeNavigate(({ cancel, type }) => {
+		if (unsavedChanges && type === 'leave') {
+			cancel();
+		} else if (unsavedChanges) {
+			if (user.current?.manual_save) {
+				cancel();
+				alert('You have unsaved changes');
+			} else {
+				db.createOrUpdateEntry(value.current ?? '').then(() => {
+					unsavedChanges = false;
+				});
+			}
+		}
+	});
 
 	onMount(() => {
 		// value.current = user.current?.entry_template ?? '';
+		//
+		//
+
+		// window.addEventListener('beforeunload', (event) => {
+		// 	if (unsavedChanges || todayLoading.current) {
+		// 		event.preventDefault();
+		// 	}
+		// });
+
 		const interval = setInterval(() => {
 			now = dayjs();
 		}, 1000);
-		return () => clearInterval(interval);
+		return () => {
+			clearInterval(interval);
+			// window.removeEventListener('beforeunload', (event) => {
+			// 	if (unsavedChanges || todayLoading.current) {
+			// 		event.preventDefault();
+			// 	}
+			// });
+		};
 	});
 </script>
 
@@ -56,12 +94,19 @@
 									.tz(user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London')
 									.format('MMM D, YYYY')}
 							</div>
-							<div class="flex items-center gap-1 text-sm">
+							<div class="text-border flex items-center gap-1 text-sm">
 								{#if todayLoading.current}
 									<div class="flex w-5 justify-center">
 										<Circle size={16} color="currentColor" />
 									</div>
 									Saving...
+								{:else if unsavedChanges}
+									{#if user.current?.manual_save}
+										<div class="flex w-5 justify-center">
+											<AlertCircle size={16} color="currentColor" />
+										</div>
+										Unsaved changes
+									{/if}
 								{:else if entries.current?.find((e) => e.today)}
 									<div class="flex w-5 justify-center">
 										<Check size={20} />
@@ -71,40 +116,34 @@
 							</div>
 						</div>
 					</div>
-					<div class="hidden gap-4 group-data-[state=open]:flex">
-						<!-- {#if value.current?.replaceAll(' ', '') != user.current?.entry_template?.replaceAll(' ', '')}
+					<div class="gap-4 group-data-[state=open]:flex">
+						{#if user.current?.manual_save && unsavedChanges && !todayLoading.current}
 							<Button
 								hiddenLabel
 								size="lg"
 								shape="circle"
-								style="text"
 								onclick={(e) => {
 									e.stopPropagation();
-									value.current = user.current?.entry_template ?? '';
+									if (!value.current) return;
+
+									db.createOrUpdateEntry(value.current).then(() => {
+										unsavedChanges = false;
+									});
 								}}
-								icon={XIcon}
-								label="Clear"
+								icon={Save}
+								label="Submit"
 							/>
 						{/if}
-						<Button
-							hiddenLabel
-							size="lg"
-							shape="circle"
-							onclick={(e) => {
-								if (!value.current) return;
-								e.stopPropagation();
-								db.createOrUpdateEntry(value.current);
-							}}
-							icon={ArrowUp}
-							label="Submit"
-						/> -->
 					</div>
 				{/snippet}
 				{#snippet content()}
 					{#if value.current !== null}
 						<SmartTextarea
 							onkeyup={() => {
-								debouncedUpdate();
+								unsavedChanges = true;
+								if (!user.current?.manual_save) {
+									debouncedUpdate();
+								}
 							}}
 							bind:value={value.current}
 						></SmartTextarea>

@@ -130,6 +130,7 @@ export const db = {
 	createOrUpdateEntry: async (value: string) => {
 		if (!user.current || !password.current) return;
 
+		console.log('createOrUpdateEntry');
 		todayLoading.current = true;
 		// entries.current?.push({
 		// 	loading: true,
@@ -268,5 +269,10 @@ export const db = {
 			value.current = v;
 		}
 		user.current.entry_template = v;
+	},
+	updateGenericSettings: async (v: { [key: string]: unknown }) => {
+		if (!user.current) return;
+		user.current = { ...user.current, ...v };
+		await pb.collection('users').update(user.current.id, v);
 	}
 };

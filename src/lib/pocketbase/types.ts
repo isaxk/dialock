@@ -115,6 +115,7 @@ export type UsersRecord = {
 	verified?: boolean;
 	entry_template?: string;
 	time_zone?: string;
+	manual_save?: boolean;
 };
 
 // Response types include system fields and match responses from the PocketBase API
