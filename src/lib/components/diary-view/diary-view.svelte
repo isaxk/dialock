@@ -6,7 +6,7 @@
 	import DiaryEntry from './diary-entry.svelte';
 	import { AlertCircle, ArrowUp, Check, Save, XIcon } from 'lucide-svelte';
 	import { ignoreScroll, todayLoading, typing, value } from '$lib/state.svelte';
-	import SmartTextarea from '$lib/components/ui/smart-textarea.svelte';
+
 	import { onMount } from 'svelte';
 	import DiaryViewContainer from './diary-view-container.svelte';
 	import EntryAccItem from './entry-acc-item.svelte';
@@ -15,6 +15,7 @@
 	import { Circle } from 'svelte-loading-spinners';
 	import Alert from '../ui/alert.svelte';
 	import { beforeNavigate } from '$app/navigation';
+	import { text_area_resize } from '$lib/utils/autoresize-textarea';
 
 	let now = $state(dayjs());
 	let accordionVal = $state('today');
@@ -80,9 +81,6 @@
 <DiaryViewContainer>
 	{#if entries.current}
 		<Accordion.Root bind:value={accordionVal} type="single" class="flex h-full flex-col">
-			{#each entries.current.filter((entry) => !entry.today) as entry (entry.id)}
-				<DiaryEntry {entry} />
-			{/each}
 			<!-- {#if !entries.current.some((entry) => dayjs(entry.created).isSame(now, 'day'))} -->
 			<EntryAccItem forceFullOpacity id="today">
 				{#snippet header()}
@@ -138,18 +136,27 @@
 				{/snippet}
 				{#snippet content()}
 					{#if value.current !== null}
-						<SmartTextarea
+						<!-- <SmartTextarea
+
+							bind:value={value.current}
+						></SmartTextarea> -->
+						<textarea
+							class="min-h-20 w-full resize-none px-5 py-2 outline-none"
+							use:text_area_resize
+							bind:value={value.current}
 							onkeyup={() => {
 								unsavedChanges = true;
 								if (!user.current?.manual_save) {
 									debouncedUpdate();
 								}
 							}}
-							bind:value={value.current}
-						></SmartTextarea>
+						></textarea>
 					{/if}
 				{/snippet}
 			</EntryAccItem>
+			{#each entries.current.filter((entry) => !entry.today).toReversed() as entry (entry.id)}
+				<DiaryEntry {entry} />
+			{/each}
 			<!-- {:else}
 				<div class="p-4" transition:slide={{ duration: 200 }}>You have already written today</div>
 			{/if} -->

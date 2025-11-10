@@ -204,18 +204,17 @@ export const db = {
 							return;
 						}
 
-						try {
-							if (!element.iv || !element.cipher_text) throw new Error('Invalid data');
-							decryptDiary(key, element.iv, element.cipher_text).then((v) => {
+						if (!element.iv || !element.cipher_text) throw new Error('Invalid data');
+						decryptDiary(key, element.iv, element.cipher_text)
+							.then((v) => {
 								if (element.today) {
 									value.current = v;
 								}
 								resolve(v);
+							})
+							.catch(() => {
+								incorrectPassword.current = true;
 							});
-						} catch (e) {
-							incorrectPassword.current = true;
-							reject(e);
-						}
 					})
 			);
 		});
