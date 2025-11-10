@@ -4,7 +4,6 @@
 	import { db, user } from '$lib/pocketbase/index.svelte';
 	import Button from '../ui/button.svelte';
 	import { Lock, LogOut, MenuIcon, Settings2, XIcon } from 'lucide-svelte';
-	import FlexThin from '../stacks/flex-thin.svelte';
 	import FlexWide from '../stacks/flex-wide.svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 	import { fade, fly } from 'svelte/transition';
