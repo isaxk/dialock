@@ -64,7 +64,7 @@
 
 <HeaderContainer>
 	<FlexThin center>
-		<Button type="link" href="/app" icon={ArrowLeft} style="text" />
+		<Button type="link" href="/app/diary" icon={ArrowLeft} style="text" />
 		<div class="text-xl font-semibold">Settings</div>
 	</FlexThin>
 </HeaderContainer>

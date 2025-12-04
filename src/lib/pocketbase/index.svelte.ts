@@ -8,6 +8,7 @@ import { SvelteMap } from 'svelte/reactivity';
 import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
 import type { EntriesStoreItem } from '$lib/types';
 import { todayLoading, value } from '$lib/state.svelte';
+import { goto } from '$app/navigation';
 
 const pb = new PocketBase(PUBLIC_POCKETBASE_URL);
 
@@ -212,6 +213,7 @@ export const db = {
 			diaryUnlocked.current = true;
 			password.current = pass;
 		}
+		goto('/app/diary');
 	},
 	lockDiary: () => {
 		diaryUnlocked.current = false;

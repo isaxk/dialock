@@ -62,7 +62,7 @@
 
 <HeaderContainer>
 	<div class="flex w-full items-center gap-3">
-		<Button type="link" href="/app" icon={ArrowLeft} style="text" />
+		<Button type="link" href="/app/diary" icon={ArrowLeft} style="text" />
 		<div class="w-full grow">
 			<Input icon={Search} bind:value={q} placeholder="Search" fullWidth autofocus />
 		</div>

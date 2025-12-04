@@ -13,7 +13,7 @@
 	let value = $state('');
 </script>
 
-<form onsubmit={(e) => e.preventDefault()} in:fade|global={{ duration: 200 }}>
+<form onsubmit={(e) => e.preventDefault()}>
 	<FlexColWide>
 		<IconHeader
 			Icon={Lock}

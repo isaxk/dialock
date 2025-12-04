@@ -20,5 +20,5 @@ export const load: LayoutLoad = async ({ url }) => {
 	if (source === 'pwa') {
 		pwa = true;
 	}
-	return { pwa };
+	return { pwa, url: url.pathname };
 };

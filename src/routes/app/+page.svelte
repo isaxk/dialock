@@ -11,34 +11,27 @@
 	import Loading from '$lib/components/screens/Loading.svelte';
 </script>
 
-{#if user.current}
-	{#if diaryUnlocked.current}
-		<MainHeader />
-		<DiaryView />
-	{:else if entries.current}
-		<FlexColWide padding screen>
-			<FlexCenter grow>
-				{#if entries.current.length > 0}
-					<ExistingLockScreen />
-				{:else}
-					<PasswordCreationScreen />
-				{/if}
-			</FlexCenter>
-			<FlexCenter>
-				<Button
-					style="text"
-					shape="text"
-					size="sm"
-					stack="horizontal"
-					label="Sign out"
-					icon={LogOut}
-					onclick={db.logOut}
-				/>
-			</FlexCenter>
-		</FlexColWide>
-	{:else}
-		<Loading />
-	{/if}
+{#if user.current && entries.current}
+	<FlexColWide padding screen>
+		<FlexCenter grow>
+			{#if entries.current.length > 0}
+				<ExistingLockScreen />
+			{:else}
+				<PasswordCreationScreen />
+			{/if}
+		</FlexCenter>
+		<FlexCenter>
+			<Button
+				style="text"
+				shape="text"
+				size="sm"
+				stack="horizontal"
+				label="Sign out"
+				icon={LogOut}
+				onclick={db.logOut}
+			/>
+		</FlexCenter>
+	</FlexColWide>
 {:else}
 	<Loading />
 {/if}
