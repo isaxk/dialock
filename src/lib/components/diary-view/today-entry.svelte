@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import dayjs from 'dayjs';
 	import EntryAccItem from './entry-acc-item.svelte';
 	import { db, entries, user } from '$lib/pocketbase/index.svelte';
@@ -8,8 +8,13 @@
 	import { text_area_resize } from '$lib/utils/autoresize-textarea';
 	import { beforeNavigate } from '$app/navigation';
 	import { debounce } from '$lib/utils';
+	import autosizeAction from 'svelte-autosize';
+	import { onMount, tick } from 'svelte';
+	import { text } from '@sveltejs/kit';
+	import Textarea from '../ui/textarea.svelte';
 
 	let unsavedChanges = $state(false);
+	let textarea: HTMLTextAreaElement = $state();
 
 	const debouncedUpdate = debounce(async () => {
 		await db.createOrUpdateEntry(value.current ?? '');
@@ -29,6 +34,17 @@
 				});
 			}
 		}
+	});
+
+	$effect(() => {
+		if (textarea && value.current) {
+			autosizeAction.update(textarea);
+		}
+
+		// const intervalId = setInterval(() => {
+		// 	autosizeAction.update(textarea);
+		// }, 1000);
+		// return () => clearInterval(intervalId);
 	});
 </script>
 
@@ -87,8 +103,9 @@
 	{#snippet content()}
 		{#if value.current !== null}
 			<textarea
+				bind:this={textarea}
 				class="min-h-20 w-full resize-none px-5 py-2 outline-none"
-				use:text_area_resize
+				use:autosizeAction
 				bind:value={value.current}
 				onkeyup={() => {
 					unsavedChanges = true;
