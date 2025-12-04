@@ -29,15 +29,14 @@
 	const md = new MediaQuery('(min-width: 768px)');
 
 	async function getAllEntries(
-		decrypted: SvelteMap<string, () => Promise<string>>
+		decrypted: SvelteMap<string, string>
 	): Promise<{ json: { date: string; text: string }[]; csv: string }> {
 		if (!entries.current) return { json: [], csv: '' };
 		const promises = Array.from(decrypted.entries()).map(async ([id, entry]) => {
 			const entryDetails = entries.current?.find((e) => e.id === id);
-			const text = await entry();
 			return {
 				date: dayjs(entryDetails?.created).format('YYYY-MM-DD'),
-				text
+				text: entry
 			};
 		});
 		const parsed = await Promise.all(promises);

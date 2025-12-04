@@ -3,7 +3,7 @@
 	import Avatar from '../ui/avatar.svelte';
 	import { db, user } from '$lib/pocketbase/index.svelte';
 	import Button from '../ui/button.svelte';
-	import { Lock, LogOut, MenuIcon, Settings2, XIcon } from 'lucide-svelte';
+	import { Lock, LogOut, MenuIcon, Search, Settings2, XIcon } from 'lucide-svelte';
 	import FlexWide from '../stacks/flex-wide.svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 	import { fade, fly } from 'svelte/transition';
@@ -35,6 +35,15 @@
 			]}
 		>
 			<FlexWide center>
+				<Button
+					style="text"
+					size="xs"
+					type="link"
+					stack="vertical"
+					href="/app/search"
+					icon={Search}
+					label="Search"
+				/>
 				<Button
 					style="text"
 					size="xs"

@@ -45,6 +45,8 @@
 		"bits-ui": "^2.8.8",
 		"clsx": "^2.1.1",
 		"dayjs": "^1.11.13",
+		"format-fuse.js": "^1.0.3",
+		"fuse.js": "^7.1.0",
 		"lucide-svelte": "^0.523.0",
 		"mode-watcher": "^1.1.0",
 		"pocketbase": "^0.26.1",

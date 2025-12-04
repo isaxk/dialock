@@ -8,20 +8,8 @@
 
 	let { entry }: { entry: EntriesStoreItem } = $props();
 
-	const decryptorFunction = $derived(decrypted.get(entry.id));
+	const decryptedValue = $derived(decrypted.get(entry.id));
 	let cacheResult: string | null = $state(null);
-
-	async function getDecrypt() {
-		if (cacheResult) return cacheResult;
-		if (decryptorFunction) {
-			const res = await decryptorFunction();
-			cacheResult = res;
-			return res;
-		}
-		return null;
-	}
-
-	const throttledDecrypt = throttle(getDecrypt, 1000);
 
 	const streak = $derived.by(() => {
 		const current = entries.current?.findIndex((e) => e.id === entry.id);
@@ -48,7 +36,7 @@
 	});
 </script>
 
-<EntryAccItem id={entry.id} hideContent={entry.loading} onmousemove={throttledDecrypt}>
+<EntryAccItem id={entry.id} hideContent={entry.loading}>
 	{#snippet header()}
 		<div class="font-semibold">
 			{dayjs(entry.created)
@@ -63,9 +51,7 @@
 	{/snippet}
 	{#snippet content()}
 		<div class="p-5">
-			{#await getDecrypt() then text}
-				{text}
-			{/await}
+			{decryptedValue}
 		</div>
 	{/snippet}
 </EntryAccItem>

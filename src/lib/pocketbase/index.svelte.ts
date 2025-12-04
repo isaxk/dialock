@@ -28,7 +28,7 @@ export const entries: {
 	current: null
 });
 
-export const decrypted = new SvelteMap<string, () => Promise<string>>();
+export const decrypted = new SvelteMap<string, string>();
 export const incorrectPassword = $state({ current: false });
 export const diaryUnlocked = $state({ current: false });
 
@@ -152,9 +152,7 @@ export const db = {
 				updated: dayjs().toISOString()
 			});
 			todayLoading.current = false;
-			decrypted.set(today.id, async () => {
-				return value;
-			});
+			decrypted.set(today.id, value);
 		} else {
 			const data = await pb.collection('entries').create({
 				user: user.current.id,
@@ -173,9 +171,7 @@ export const db = {
 			];
 			todayLoading.current = false;
 
-			decrypted.set(data.id, async () => {
-				return value;
-			});
+			decrypted.set(data.id, value);
 			// entries.current = entries.current?.filter((element) => element.loading !== true) ?? [];
 			// entries.current.push({ ...data, loading: false } as EntriesStoreItem);
 			return data;
@@ -193,47 +189,24 @@ export const db = {
 		}
 		incorrectPassword.current = false;
 		const key = await deriveKey(pass, user.current.salt);
-		entries.current.forEach((element) => {
+		for (const element of entries.current) {
 			if (!user.current || !pass || !entries || !element.iv || !element.cipher_text) return;
-			decrypted.set(
-				element.id,
-				() =>
-					new Promise((resolve, reject) => {
-						if (!user.current || !entries.current || !element.iv) {
-							reject();
-							return;
-						}
-
-						if (!element.iv || !element.cipher_text) throw new Error('Invalid data');
-						decryptDiary(key, element.iv, element.cipher_text)
-							.then((v) => {
-								if (element.today) {
-									value.current = v;
-								}
-								resolve(v);
-							})
-							.catch(() => {
-								incorrectPassword.current = true;
-							});
-					})
-			);
-		});
+			const v = await decryptDiary(key, element.iv, element.cipher_text);
+			if (element.today) {
+				value.current = v;
+			}
+			decrypted.set(element.id, v);
+		}
 		value.current = user.current?.entry_template ?? '';
 		if (entries.current && entries.current?.find((entry) => entry.today)?.id) {
-			decrypted
-				.get(entries.current.find((entry) => entry.today)!.id)?.()
-				.then((d) => {
-					value.current = d;
-				});
+			value.current = decrypted.get(entries.current.find((entry) => entry.today)!.id);
 		}
 		if (entries.current.length > 0) {
-			const fn = decrypted.get(entries.current[0].id);
-			if (fn) {
-				fn().then(() => {
-					if (incorrectPassword.current) return;
-					diaryUnlocked.current = true;
-					password.current = pass;
-				});
+			const v = decrypted.get(entries.current[0].id);
+			if (v) {
+				if (incorrectPassword.current) return;
+				diaryUnlocked.current = true;
+				password.current = pass;
 			}
 		} else {
 			diaryUnlocked.current = true;
