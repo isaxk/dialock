@@ -9,6 +9,14 @@
 	--outline: #59533a;
 }
 
+html {
+	scrollbar-gutter: stable;
+}
+
+body {
+	padding-right: 0px !important;
+}
+
 .dark {
 	--background: #2b281b;
 	--foreground: #e6e2d3;

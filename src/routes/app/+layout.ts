@@ -1,3 +1,4 @@
 export const load = async ({ url }) => {
-	return { url: url.pathname };
+	const afterUnlock = url.searchParams.get('afterUnlock');
+	return { url: url.pathname, afterUnlock };
 };

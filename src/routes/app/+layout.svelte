@@ -7,6 +7,7 @@
 	import { fade, scale } from 'svelte/transition';
 	import Button from '$lib/components/ui/button.svelte';
 	import Loading from '$lib/components/screens/Loading.svelte';
+	import MainHeader from '$lib/components/header/main-header.svelte';
 
 	let { children, data }: { children: Snippet; data: PageData } = $props();
 
@@ -21,13 +22,17 @@
 
 	$effect(() => {
 		if (!diaryUnlocked.current && page.url.pathname !== '/app') {
-			goto('/app');
+			goto(page.url.pathname === '/app/diary' ? '/app' : '/app?afterUnlock=' + page.url.pathname);
 		}
 	});
 </script>
 
+{#if (data.url === '/app/diary' || data.url.includes('/app/calendar') || data.url === '/app/search') && diaryUnlocked.current}
+	<MainHeader />
+{/if}
+
 {#key data.url}
-	<div out:fade={{ duration: 100 }} in:scale={{ duration: 200, start: 0.99, delay: 125 }}>
+	<div class="" out:fade={{ duration: 100 }} in:scale={{ duration: 200, start: 0.99, delay: 125 }}>
 		{#if user.current && mounted && (page.url.pathname === '/app' || diaryUnlocked.current)}
 			{@render children()}
 		{:else if data.pwa}

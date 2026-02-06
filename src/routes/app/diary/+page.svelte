@@ -12,5 +12,4 @@
 	});
 </script>
 
-<MainHeader />
 <DiaryView />

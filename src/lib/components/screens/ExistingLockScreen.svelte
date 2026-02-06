@@ -17,7 +17,7 @@
 	<FlexColWide>
 		<IconHeader
 			Icon={Lock}
-			title={user?.current?.name + "'s vault"}
+			title={user?.current?.name + "'s diary"}
 			description="End to end encryption"
 		/>
 		<FlexColThin center>

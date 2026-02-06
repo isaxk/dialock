@@ -9,6 +9,7 @@ import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
 import type { EntriesStoreItem } from '$lib/types';
 import { todayLoading, value } from '$lib/state.svelte';
 import { goto } from '$app/navigation';
+import { page } from '$app/state';
 
 const pb = new PocketBase(PUBLIC_POCKETBASE_URL);
 
@@ -192,28 +193,43 @@ export const db = {
 		const key = await deriveKey(pass, user.current.salt);
 		for (const element of entries.current) {
 			if (!user.current || !pass || !entries || !element.iv || !element.cipher_text) return;
-			const v = await decryptDiary(key, element.iv, element.cipher_text);
-			if (element.today) {
-				value.current = v;
+
+			try {
+				const v = await decryptDiary(key, element.iv, element.cipher_text);
+				if (element.today) {
+					value.current = v;
+				}
+				decrypted.set(element.id, v);
+			} catch (error) {
+				console.error(error);
+				incorrectPassword.current = true;
 			}
-			decrypted.set(element.id, v);
 		}
 		value.current = user.current?.entry_template ?? '';
 		if (entries.current && entries.current?.find((entry) => entry.today)?.id) {
 			value.current = decrypted.get(entries.current.find((entry) => entry.today)!.id);
 		}
 		if (entries.current.length > 0) {
-			const v = decrypted.get(entries.current[0].id);
-			if (v) {
-				if (incorrectPassword.current) return;
-				diaryUnlocked.current = true;
-				password.current = pass;
+			try {
+				const v = decrypted.get(entries.current[0].id);
+				if (v) {
+					if (incorrectPassword.current) return;
+					diaryUnlocked.current = true;
+					password.current = pass;
+				} else {
+					incorrectPassword.current = true;
+					return;
+				}
+			} catch (error) {
+				console.error(error);
+				incorrectPassword.current = true;
+				return;
 			}
 		} else {
 			diaryUnlocked.current = true;
 			password.current = pass;
 		}
-		goto('/app/diary');
+		goto(page.data.afterUnlock ?? '/app/diary');
 	},
 	lockDiary: () => {
 		diaryUnlocked.current = false;
