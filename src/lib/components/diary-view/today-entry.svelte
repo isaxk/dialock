@@ -75,7 +75,7 @@
 						<div class="flex w-5 justify-center">
 							<Check size={20} />
 						</div>
-						Saved. You can edit for the rest of the day.
+						Saved changes.
 					{/if}
 				</div>
 			</div>
