@@ -47,7 +47,9 @@
 			{day?.date()}
 		</div>
 		<div class="grow"></div>
-		<div class="text-border flex w-full translate-x-2 justify-end pb-0.5">
+		<div
+			class="text-border flex w-full origin-bottom-right translate-x-2 scale-80 justify-end pb-0.5"
+		>
 			<EntryStreak {streak} />
 		</div>
 	</Dialog.Trigger>

@@ -24,7 +24,7 @@
 	value={id}
 	class={['border-foreground/20 group flex-grow border-b last:border-none']}
 >
-	<Accordion.Header class="bg-background sticky top-16 w-full">
+	<Accordion.Header class="bg-background sticky top-[calc(64px+env(safe-area-inset-top))] w-full">
 		<Accordion.Trigger
 			{onmousemove}
 			class={[

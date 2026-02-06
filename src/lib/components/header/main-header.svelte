@@ -20,6 +20,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import { DropdownMenu } from 'bits-ui';
 	import { page } from '$app/state';
+	import dayjs from 'dayjs';
 
 	let showMainHeader = $state(false);
 
@@ -63,7 +64,7 @@
 	<div class="flex-grow"></div>
 
 	<div
-		class="border-border pb-safe-bottom bg-background fixed right-0 bottom-0 left-0 flex items-center gap-0.5 rounded-none border p-1 sm:static sm:rounded-lg sm:p-0.5"
+		class="border-border pb-safe-bottom bg-background fixed right-0 bottom-0 left-0 flex items-center gap-0.5 rounded-none border-t p-1 sm:static sm:rounded-lg sm:border sm:p-0.5"
 	>
 		<a
 			href="/app/diary"
@@ -79,7 +80,7 @@
 			Feed
 		</a>
 		<a
-			href="/app/calendar"
+			href="/app/calendar/{dayjs().year()}/{dayjs().month() + 1}"
 			class={[
 				' flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
 

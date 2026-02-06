@@ -81,7 +81,7 @@
 			</div>
 		</div>
 		<div
-			class="*:border-border/20 grid h-10 grid-cols-7 px-1 *:border-r *:p-3 *:pt-1 *:last:border-r-0"
+			class="*:border-border/20 grid h-10 grid-cols-7 px-1 text-center *:border-r *:px-0 *:pt-1 *:last:border-r-0 sm:text-left *:sm:p-3"
 		>
 			<div>Mon</div>
 			<div>Tue</div>

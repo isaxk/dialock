@@ -101,13 +101,13 @@
 	$inspect(results);
 </script>
 
-<HeaderContainer top="60px">
+<div class="pt-safe-top fixed top-16 right-0 left-0 px-4">
 	<div class="flex w-full items-center gap-3">
 		<div class="w-full grow">
 			<Input icon={Search} bind:value={q} placeholder="Search" fullWidth autofocus />
 		</div>
 	</div>
-</HeaderContainer>
+</div>
 
 <ScreenContainer>
 	<div class="px-4 pt-36">
