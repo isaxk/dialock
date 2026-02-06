@@ -32,7 +32,11 @@
 {/if}
 
 {#key data.url}
-	<div class="" out:fade={{ duration: 100 }} in:scale={{ duration: 200, start: 0.99, delay: 125 }}>
+	<div
+		class="pt-safe-top"
+		out:fade={{ duration: 100 }}
+		in:scale={{ duration: 200, start: 0.99, delay: 125 }}
+	>
 		{#if user.current && mounted && (page.url.pathname === '/app' || diaryUnlocked.current)}
 			{@render children()}
 		{:else if data.pwa}

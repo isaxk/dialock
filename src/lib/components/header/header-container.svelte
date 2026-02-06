@@ -10,7 +10,7 @@
 	class={['fixed top-0 right-0 left-0 z-50']}
 >
 	<div
-		class="bg-background border-foreground/30 mx-auto flex h-16 w-full max-w-screen-sm items-center gap-2.5 px-5"
+		class="bg-background border-foreground/30 pt-safe-top mx-auto flex h-16 w-full max-w-screen-sm items-center gap-2.5 px-5"
 	>
 		{@render children()}
 	</div>
