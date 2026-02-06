@@ -63,7 +63,7 @@
 	<div class="flex-grow"></div>
 
 	<div
-		class="border-border bg-background fixed right-0 bottom-0 left-0 flex items-center gap-0.5 rounded-none border p-1 sm:static sm:rounded-lg sm:p-0.5"
+		class="border-border pb-safe-bottom bg-background fixed right-0 bottom-0 left-0 flex items-center gap-0.5 rounded-none border p-1 sm:static sm:rounded-lg sm:p-0.5"
 	>
 		<a
 			href="/app/diary"
