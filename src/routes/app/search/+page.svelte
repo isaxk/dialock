@@ -101,7 +101,7 @@
 	$inspect(results);
 </script>
 
-<div class="pt-safe-top fixed top-16 right-0 left-0 px-4">
+<div class="pt-safe-top fixed top-16 right-0 left-0 z-100 px-4">
 	<div class="flex w-full items-center justify-center gap-3">
 		<div class="w-full max-w-screen-sm grow sm:px-4">
 			<Input icon={Search} bind:value={q} placeholder="Search" fullWidth autofocus />

@@ -227,7 +227,7 @@
 					<a class="underline" href="https://github.com/isaxk/dialock">GitHub project</a>
 				</div>
 				<div>
-					<a class="text-sm" href="https://www.isaxk.com">Copyright &copy; Isaac Boorman 2025</a>
+					<a class="text-sm" href="https://www.isaxk.com">Copyright &copy; Isaac Boorman 2026</a>
 				</div>
 			</div>
 		</div>

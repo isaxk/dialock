@@ -30,8 +30,8 @@
 </script>
 
 <div class={['flex', vertical ? 'flex-col gap-4' : 'flex-row items-center']}>
-	<div class="flex h-full flex-grow items-center">
-		<div class="flex-grow">
+	<div class={['flex items-center', !vertical && 'h-full flex-grow ']}>
+		<div class={['flex-grow']}>
 			<div class="text-lg font-medium">{title}</div>
 			{#if description}
 				<div class="text-[10px] sm:text-xs">
