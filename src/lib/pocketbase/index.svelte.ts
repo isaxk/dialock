@@ -7,7 +7,7 @@ import timezone from 'dayjs/plugin/timezone';
 import { SvelteMap } from 'svelte/reactivity';
 import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
 import type { EntriesStoreItem } from '$lib/types/types';
-import { todayLoading, value } from '$lib/utils/state.svelte';
+import { recoveringBackup, todayLoading, value } from '$lib/utils/state.svelte';
 import { goto } from '$app/navigation';
 import { page } from '$app/state';
 import { checkForBackUps, clearBackups } from './autosave-backup';
@@ -253,6 +253,8 @@ export const db = {
 			password.current = pass;
 		}
 
+		recoveringBackup.current = true;
+
 		const backupResponse = checkForBackUps(entries.current);
 
 		console.log('backupResponse', backupResponse);
@@ -265,6 +267,8 @@ export const db = {
 		);
 
 		clearBackups();
+
+		recoveringBackup.current = false;
 
 		if (entries.current && entries.current?.find((entry) => entry.today)?.id) {
 			value.current = decrypted.get(entries.current.find((entry) => entry.today)!.id);

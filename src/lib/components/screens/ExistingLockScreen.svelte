@@ -9,6 +9,7 @@
 	import Input from '../ui/input.svelte';
 	import Wiggler from '../ui/wiggler.svelte';
 	import { fade } from 'svelte/transition';
+	import { recoveringBackup } from '$lib/utils/state.svelte';
 
 	let value = $state('');
 </script>
@@ -35,6 +36,8 @@
 			<div class="h-4">
 				{#if incorrectPassword.current}
 					<Wiggler message="Incorrect password" />
+				{:else if recoveringBackup.current}
+					Recovering backup...
 				{/if}
 			</div>
 		</FlexColThin>
