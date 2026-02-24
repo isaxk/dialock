@@ -2,7 +2,7 @@
 	import dayjs from 'dayjs';
 	import EntryAccItem from './entry-acc-item.svelte';
 	import { db, entries, user } from '$lib/pocketbase/index.svelte';
-	import { todayLoading, value } from '$lib/state.svelte';
+	import { todayLoading, value } from '$lib/utils/state.svelte';
 	import { AlertCircle, Check, Circle, Save } from 'lucide-svelte';
 	import Button from '../ui/button.svelte';
 	import { text_area_resize } from '$lib/utils/autoresize-textarea';
@@ -12,14 +12,23 @@
 	import { onMount, tick } from 'svelte';
 	import { text } from '@sveltejs/kit';
 	import Textarea from '../ui/textarea.svelte';
+	import { clearBackups, saveBackUp } from '$lib/pocketbase/autosave-backup';
 
 	let unsavedChanges = $state(false);
 	let textarea: HTMLTextAreaElement = $state();
 
 	const debouncedUpdate = debounce(async () => {
-		await db.createOrUpdateEntry(value.current ?? '');
+		await db.createOrUpdateEntry(value.current ?? '').then(() => {
+			clearBackups();
+		});
 		unsavedChanges = false;
-	}, 2500);
+	}, 1500);
+
+	function handleSaveBackup() {
+		const date = dayjs().format('YYYY-MM-DD');
+		const content = textarea.value;
+		saveBackUp(date, content);
+	}
 
 	beforeNavigate(({ cancel, type }) => {
 		if (unsavedChanges && type === 'leave') {
@@ -110,6 +119,7 @@
 				onkeyup={() => {
 					unsavedChanges = true;
 					if (!user.current?.manual_save) {
+						handleSaveBackup();
 						debouncedUpdate();
 					}
 				}}

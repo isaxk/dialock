@@ -3,8 +3,6 @@
 	import FlexCenter from '$lib/components/stacks/flex-center.svelte';
 	import ExistingLockScreen from '$lib/components/screens/ExistingLockScreen.svelte';
 	import PasswordCreationScreen from '$lib/components/screens/PasswordCreationScreen.svelte';
-	import MainHeader from '$lib/components/header/main-header.svelte';
-	import DiaryView from '$lib/components/diary-view/diary-view.svelte';
 	import FlexColWide from '$lib/components/stacks/flex-col-wide.svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import { LogOut } from 'lucide-svelte';

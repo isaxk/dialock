@@ -1,6 +1,6 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-	import { areAdjacentDays, throttle } from '$lib/utils';
+	import { areAdjacentDays } from '$lib/utils';
 	import { decrypted, entries, user } from '$lib/pocketbase/index.svelte';
 	import EntryAccItem from './entry-acc-item.svelte';
 	import EntryStreak from './entry-streak.svelte';
@@ -9,7 +9,6 @@
 	let { entry }: { entry: EntriesStoreItem } = $props();
 
 	const decryptedValue = $derived(decrypted.get(entry.id));
-	let cacheResult: string | null = $state(null);
 
 	const streak = $derived.by(() => {
 		const current = entries.current?.findIndex((e) => e.id === entry.id);

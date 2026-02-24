@@ -2,49 +2,17 @@
 	import CalendarEntry from '$lib/components/calendar/calendar-entry.svelte';
 	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
 	import Button from '$lib/components/ui/button.svelte';
-	import { decrypted, entries } from '$lib/pocketbase/index.svelte.js';
-	import { Dialog } from 'bits-ui';
-	import dayjs, { Dayjs } from 'dayjs';
-	import { ArrowLeft, ArrowRight, RotateCcwIcon, RotateCw, X } from 'lucide-svelte';
+	import { entries } from '$lib/pocketbase/index.svelte.js';
+	import { getWeeksInMonth } from '$lib/utils/index.js';
+	import dayjs from 'dayjs';
+	import { ArrowLeft, ArrowRight, RotateCcwIcon } from 'lucide-svelte';
 
 	let { data } = $props();
-
-	function getWeeksInMonth(year: number, month: number): (Dayjs | null)[][] {
-		const firstDayOfMonth = dayjs(`${year}-${month}-01`);
-		const lastDayOfMonth = firstDayOfMonth.endOf('month');
-
-		// dayjs: Sunday = 0 → Monday = 0
-		const mondayIndex = (firstDayOfMonth.day() + 6) % 7;
-
-		// Back up to Monday
-		let current = firstDayOfMonth.subtract(mondayIndex, 'day');
-
-		const weeks: (Dayjs | null)[][] = [];
-
-		while (current.isBefore(lastDayOfMonth) || current.isSame(lastDayOfMonth, 'day')) {
-			const week: (Dayjs | null)[] = [];
-
-			for (let i = 0; i < 7; i++) {
-				if (current.month() === month - 1) {
-					week.push(current);
-				} else {
-					week.push(null);
-				}
-
-				current = current.add(1, 'day');
-			}
-
-			weeks.push(week);
-		}
-
-		return weeks;
-	}
 
 	const weeks = $derived(getWeeksInMonth(data.year, data.month));
 </script>
 
 <ScreenContainer>
-	<div class="pt-16"></div>
 	<div class="w-full">
 		<div class="flex h-20 items-center px-4">
 			<div class="grow text-xl font-semibold">

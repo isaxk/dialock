@@ -3,7 +3,7 @@
 </script>
 
 <div class="flex min-h-screen w-full justify-center">
-	<div class="w-full max-w-screen-sm px-2">
+	<div class="w-full max-w-screen-sm px-2 pt-16">
 		{@render children()}
 	</div>
 </div>

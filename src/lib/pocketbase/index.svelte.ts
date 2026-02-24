@@ -6,15 +6,88 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { SvelteMap } from 'svelte/reactivity';
 import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
-import type { EntriesStoreItem } from '$lib/types';
-import { todayLoading, value } from '$lib/state.svelte';
+import type { EntriesStoreItem } from '$lib/types/types';
+import { todayLoading, value } from '$lib/utils/state.svelte';
 import { goto } from '$app/navigation';
 import { page } from '$app/state';
+import { checkForBackUps, clearBackups } from './autosave-backup';
 
 const pb = new PocketBase(PUBLIC_POCKETBASE_URL);
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
+function testFunction(value) {
+	console.log('testFunction', value);
+}
+
+async function createOrUpdateEntry(value: string, manualDate?: string) {
+	console.log('createOrUpdateEntry');
+	console.log(user.current, password.current);
+	if (!user.current || !password.current) return;
+
+	const timezone = user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London';
+
+	todayLoading.current = true;
+	// entries.current?.push({
+	// 	loading: true,
+	// 	id: 'today',
+	// 	cipher_text: undefined,
+	// 	iv: undefined,
+	// 	user: user.current.id,
+	// 	created: dayjs().toISOString(),
+	// 	updated: dayjs().toISOString()
+	// });
+
+	const key = await deriveKey(password.current, user.current.salt);
+	const { ivHex, ctHex } = await encryptDiary(key, value);
+	if (
+		(manualDate &&
+			entries.current?.find((entry) =>
+				dayjs(entry.created).tz(timezone).isSame(dayjs(manualDate), 'day')
+			)) ||
+		(!manualDate && entries.current?.find((entry) => entry.today))
+	) {
+		const existing = manualDate
+			? entries.current.find((entry) =>
+					dayjs(entry.created).tz(timezone).isSame(dayjs(manualDate), 'day')
+				)!
+			: entries.current.find((entry) => entry.today)!;
+		const data = await pb.collection('entries').update(existing.id, {
+			iv: ivHex,
+			cipher_text: ctHex,
+			updated: dayjs().toISOString()
+		});
+		console.log('existing', existing);
+		todayLoading.current = false;
+		decrypted.set(existing.id, value);
+		return data;
+	} else {
+		const data = await pb.collection('entries').create({
+			user: user.current.id,
+			iv: ivHex,
+			cipher_text: ctHex,
+			created: dayjs(manualDate).toISOString() ?? dayjs().toISOString(),
+			updated: dayjs().toISOString()
+		});
+		console.log('new', data);
+
+		entries.current = [
+			...(entries.current ?? []),
+			{
+				...data,
+				today: !manualDate || dayjs(data.created).tz(timezone).isSame(dayjs(), 'day'),
+				loading: false
+			}
+		];
+		todayLoading.current = false;
+
+		decrypted.set(data.id, value);
+		// entries.current = entries.current?.filter((element) => element.loading !== true) ?? [];
+		// entries.current.push({ ...data, loading: false } as EntriesStoreItem);
+		return data;
+	}
+}
 
 export const user: {
 	current: UsersRecord | null;
@@ -129,56 +202,7 @@ export const db = {
 		pb.authStore.clear();
 		user.current = null;
 	},
-	createOrUpdateEntry: async (value: string) => {
-		if (!user.current || !password.current) return;
-
-		console.log('createOrUpdateEntry');
-		todayLoading.current = true;
-		// entries.current?.push({
-		// 	loading: true,
-		// 	id: 'today',
-		// 	cipher_text: undefined,
-		// 	iv: undefined,
-		// 	user: user.current.id,
-		// 	created: dayjs().toISOString(),
-		// 	updated: dayjs().toISOString()
-		// });
-
-		const key = await deriveKey(password.current, user.current.salt);
-		const { ivHex, ctHex } = await encryptDiary(key, value);
-		if (entries.current?.find((entry) => entry.today)) {
-			const today = entries.current.find((entry) => entry.today)!;
-			await pb.collection('entries').update(today.id, {
-				iv: ivHex,
-				cipher_text: ctHex,
-				updated: dayjs().toISOString()
-			});
-			todayLoading.current = false;
-			decrypted.set(today.id, value);
-		} else {
-			const data = await pb.collection('entries').create({
-				user: user.current.id,
-				iv: ivHex,
-				cipher_text: ctHex,
-				created: dayjs().toISOString()
-			});
-
-			entries.current = [
-				...(entries.current ?? []),
-				{
-					...data,
-					today: true,
-					loading: false
-				}
-			];
-			todayLoading.current = false;
-
-			decrypted.set(data.id, value);
-			// entries.current = entries.current?.filter((element) => element.loading !== true) ?? [];
-			// entries.current.push({ ...data, loading: false } as EntriesStoreItem);
-			return data;
-		}
-	},
+	createOrUpdateEntry,
 	unlockDiary: async (pass: string) => {
 		if (!user.current) return;
 		if (!entries.current || !pass) {
@@ -205,10 +229,9 @@ export const db = {
 				incorrectPassword.current = true;
 			}
 		}
+
 		value.current = user.current?.entry_template ?? '';
-		if (entries.current && entries.current?.find((entry) => entry.today)?.id) {
-			value.current = decrypted.get(entries.current.find((entry) => entry.today)!.id);
-		}
+
 		if (entries.current.length > 0) {
 			try {
 				const v = decrypted.get(entries.current[0].id);
@@ -229,6 +252,24 @@ export const db = {
 			diaryUnlocked.current = true;
 			password.current = pass;
 		}
+
+		const backupResponse = checkForBackUps(entries.current);
+
+		console.log('backupResponse', backupResponse);
+
+		await Promise.all(
+			backupResponse.map(async (backup) => {
+				const result = await createOrUpdateEntry(backup.content, backup.date);
+				if (result) decrypted.set(result.id, backup.content);
+			})
+		);
+
+		clearBackups();
+
+		if (entries.current && entries.current?.find((entry) => entry.today)?.id) {
+			value.current = decrypted.get(entries.current.find((entry) => entry.today)!.id);
+		}
+
 		goto(page.data.afterUnlock ?? '/app/diary');
 	},
 	lockDiary: () => {

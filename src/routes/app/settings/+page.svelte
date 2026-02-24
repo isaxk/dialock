@@ -70,7 +70,6 @@
 </HeaderContainer>
 
 <ScreenContainer>
-	<div class="pt-15"></div>
 	<FlexColWide padding>
 		<SettingsItem
 			onSave={async () => {

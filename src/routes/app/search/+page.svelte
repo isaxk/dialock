@@ -1,27 +1,12 @@
 <script lang="ts">
-	import HeaderContainer from '$lib/components/header/header-container.svelte';
-	import FlexCenter from '$lib/components/stacks/flex-center.svelte';
-	import FlexThin from '$lib/components/stacks/flex-thin.svelte';
-	import FlexWide from '$lib/components/stacks/flex-wide.svelte';
-	import Button from '$lib/components/ui/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
-	import {
-		ArrowLeft,
-		ArrowUpRight,
-		ArrowUpRightFromSquare,
-		Expand,
-		Eye,
-		Fullscreen,
-		Search
-	} from 'lucide-svelte';
-	import Fuse from 'fuse.js';
-	import format from 'format-fuse.js';
+	import { Expand, Search } from 'lucide-svelte';
+
 	import { decrypted, entries } from '$lib/pocketbase/index.svelte';
-	import { browser } from '$app/environment';
-	import Highlight from '$lib/components/ui/highlight.svelte';
+
 	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
 	import dayjs from 'dayjs';
-	import { AlertDialog, Dialog } from 'bits-ui';
+	import { Dialog } from 'bits-ui';
 	import EntryDialog from '$lib/components/ui/entry-dialog.svelte';
 
 	let q = $state('');
@@ -30,13 +15,6 @@
 		Array.from(decrypted).map(([id, text]) => {
 			const entryDetails = entries.current?.find((entry) => entry.id === id);
 			return { id, text, entryDetails };
-		})
-	);
-
-	const fuse = $derived(
-		new Fuse(searchArray, {
-			keys: ['text'],
-			includeMatches: true
 		})
 	);
 
@@ -97,8 +75,6 @@
 					})
 			: []
 	);
-
-	$inspect(results);
 </script>
 
 <div class="pt-safe-top fixed top-16 right-0 left-0 z-100 px-4">
@@ -112,18 +88,21 @@
 <ScreenContainer>
 	<div class="px-4 pt-36">
 		{#if results}
-			{#each results as result, i (result.id)}
+			{#each results as result (result.id)}
 				<Dialog.Root>
 					<Dialog.Trigger class="flex w-full items-center gap-4 pb-10 text-left">
 						<div class="min-w-0 grow">
 							<div class="text-lg font-medium">
-								{dayjs(result.entryDetails.created).format('MMM DD, YYYY')}
+								{result.entryDetails?.created
+									? dayjs(result.entryDetails?.created).format('MMM DD, YYYY')
+									: null}
 							</div>
 							<div class="pt-2 font-serif text-sm">
 								"{#each result.preview as f, i (f.text + i)}
 									{#if f.mark}
 										<span class="bg-primary/25 font-medium">{f.text}</span>
 									{:else}
+										<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 										{@html f.text}
 									{/if}
 								{/each}"
@@ -133,11 +112,16 @@
 							<Expand size={18} />
 						</div>
 					</Dialog.Trigger>
-					<EntryDialog title={dayjs(result.entryDetails.created).format('MMM DD, YYYY')}>
+					<EntryDialog
+						title={result.entryDetails
+							? dayjs(result.entryDetails.created).format('MMM DD, YYYY')
+							: ''}
+					>
 						{#each result.format as f, i (f.text + i)}
 							{#if f.mark}
 								<span class="bg-primary/25 font-medium">{f.text}</span>
 							{:else}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 								{@html f.text}
 							{/if}
 						{/each}
