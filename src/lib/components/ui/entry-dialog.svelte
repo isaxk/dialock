@@ -3,8 +3,13 @@
 	import { X } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { render } from 'svelte/server';
+	import EntryStreak from '../diary-view/entry-streak.svelte';
 
-	let { title, children }: { title: string; children: Snippet } = $props();
+	let {
+		title,
+		children,
+		streak = 0
+	}: { title: string; children: Snippet; streak?: number } = $props();
 </script>
 
 <Dialog.Portal>
@@ -16,6 +21,7 @@
 	>
 		<div class="flex items-center">
 			<Dialog.Title class="grow text-lg font-medium">{title}</Dialog.Title>
+			<EntryStreak {streak} />
 			<Dialog.Close class="p-3 pr-0"><X size={20} /></Dialog.Close>
 		</div>
 		<div class="min-h-0 grow overflow-y-scroll font-serif">

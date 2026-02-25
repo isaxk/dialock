@@ -1,46 +1,25 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-	import { areAdjacentDays } from '$lib/utils';
+	import { areAdjacentDays, calculateStreak } from '$lib/utils';
 	import { decrypted, entries, user } from '$lib/pocketbase/index.svelte';
 	import EntryAccItem from './entry-acc-item.svelte';
 	import EntryStreak from './entry-streak.svelte';
-	import type { EntriesStoreItem } from '$lib/types';
+	import type { EntriesStoreItem } from '$lib/types/types';
 
-	let { entry }: { entry: EntriesStoreItem } = $props();
+	let { entry, stickyWithMonth = false }: { entry: EntriesStoreItem; stickyWithMonth?: boolean } =
+		$props();
 
 	const decryptedValue = $derived(decrypted.get(entry.id));
 
-	const streak = $derived.by(() => {
-		const current = entries.current?.findIndex((e) => e.id === entry.id);
-		if (!current) return 0;
-		const previous = entries.current?.filter((_, i) => i <= current).toReversed();
-
-		let streak = 1;
-
-		if (previous) {
-			for (let i = 0; i < previous.length; i++) {
-				const a = previous[i]?.created;
-				const b = previous[i + 1]?.created;
-				if (a && b) {
-					if (areAdjacentDays(a, b)) {
-						streak = streak + 1;
-					} else {
-						break;
-					}
-				}
-			}
-		}
-
-		return streak;
-	});
+	const streak = $derived(calculateStreak(entry.id, entries.current ?? []));
 </script>
 
-<EntryAccItem id={entry.id} hideContent={entry.loading}>
+<EntryAccItem {stickyWithMonth} id={entry.id} hideContent={entry.loading}>
 	{#snippet header()}
 		<div class="font-semibold">
 			{dayjs(entry.created)
 				.tz(user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London')
-				.format('MMM D, YYYY')}
+				.format('ddd DD')}
 		</div>
 		<div>
 			{#if entry.loading}Uploading...{/if}

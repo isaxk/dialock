@@ -7,12 +7,13 @@
 	import Button from '../ui/button.svelte';
 	import { text_area_resize } from '$lib/utils/autoresize-textarea';
 	import { beforeNavigate } from '$app/navigation';
-	import { debounce } from '$lib/utils';
+	import { calculateStreak, debounce } from '$lib/utils';
 	import autosizeAction from 'svelte-autosize';
 	import { onMount, tick } from 'svelte';
 	import { text } from '@sveltejs/kit';
 	import Textarea from '../ui/textarea.svelte';
 	import { clearBackups, saveBackUp } from '$lib/pocketbase/autosave-backup';
+	import EntryStreak from './entry-streak.svelte';
 
 	let unsavedChanges = $state(false);
 	let textarea: HTMLTextAreaElement = $state();
@@ -49,11 +50,13 @@
 		if (textarea && value.current) {
 			autosizeAction.update(textarea);
 		}
+	});
 
-		// const intervalId = setInterval(() => {
-		// 	autosizeAction.update(textarea);
-		// }, 1000);
-		// return () => clearInterval(intervalId);
+	const potentialStreak = $derived.by(() => {
+		if (!entries.current || !entries.current.length) return 0;
+		const mostRecentEntry = entries.current.findLast((entry) => !entry.today);
+		if (!mostRecentEntry) return 0;
+		return calculateStreak(mostRecentEntry.id, entries.current) + 1;
 	});
 </script>
 
@@ -89,8 +92,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="gap-4 group-data-[state=open]:flex">
-			{#if user.current?.manual_save && unsavedChanges && !todayLoading.current}
+		{#if potentialStreak}
+			<EntryStreak
+				streak={potentialStreak}
+				style={entries.current?.find((e) => e.today) ? 'secured' : 'at-risk'}
+			/>
+		{/if}
+		{#if user.current?.manual_save && unsavedChanges && !todayLoading.current}
+			<div class="gap-4 group-data-[state=open]:flex">
 				<Button
 					hiddenLabel
 					size="lg"
@@ -106,8 +115,8 @@
 					icon={Save}
 					label="Submit"
 				/>
-			{/if}
-		</div>
+			</div>
+		{/if}
 	{/snippet}
 	{#snippet content()}
 		{#if value.current !== null}

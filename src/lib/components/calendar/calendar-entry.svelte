@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { decrypted, entries } from '$lib/pocketbase/index.svelte';
-	import { areAdjacentDays } from '$lib/utils';
+	import { calculateStreak } from '$lib/utils';
 	import { Dialog } from 'bits-ui';
 	import dayjs from 'dayjs';
-	import { X } from 'lucide-svelte';
+
 	import EntryStreak from '../diary-view/entry-streak.svelte';
 	import EntryDialog from '../ui/entry-dialog.svelte';
 
@@ -11,30 +11,7 @@
 
 	const entry = $derived(entries.current?.find((entry) => dayjs(entry.created).isSame(day, 'day')));
 
-	const streak = $derived.by(() => {
-		if (!entry) return 0;
-		const current = entries.current?.findIndex((e) => e.id === entry.id);
-		if (!current) return 0;
-		const previous = entries.current?.filter((_, i) => i <= current).toReversed();
-
-		let streak = 1;
-
-		if (previous) {
-			for (let i = 0; i < previous.length; i++) {
-				const a = previous[i]?.created;
-				const b = previous[i + 1]?.created;
-				if (a && b) {
-					if (areAdjacentDays(a, b)) {
-						streak = streak + 1;
-					} else {
-						break;
-					}
-				}
-			}
-		}
-
-		return streak;
-	});
+	const streak = $derived(entry ? calculateStreak(entry.id, entries.current ?? []) : 0);
 </script>
 
 <Dialog.Root>
@@ -66,7 +43,7 @@
 			</div>
 		</Dialog.Content>
 	</Dialog.Portal> -->
-	<EntryDialog title={day?.format('MMM DD, YYYY')}>
+	<EntryDialog title={day?.format('MMM DD, YYYY')} {streak}>
 		{#if entry}
 			{@const text = decrypted.get(entry.id)}
 

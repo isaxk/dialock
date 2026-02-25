@@ -9,6 +9,7 @@
 		content,
 		forceFullOpacity = false,
 		hideContent = false,
+		stickyWithMonth = false,
 		onmousemove = () => {}
 	}: {
 		id: string;
@@ -16,6 +17,7 @@
 		content: Snippet;
 		forceFullOpacity?: boolean;
 		hideContent?: boolean;
+		stickyWithMonth?: boolean;
 		onmousemove?: () => void;
 	} = $props();
 </script>
@@ -24,7 +26,14 @@
 	value={id}
 	class={['border-foreground/20 group flex-grow border-b last:border-none']}
 >
-	<Accordion.Header class="bg-background sticky top-[calc(64px+env(safe-area-inset-top))] w-full">
+	<Accordion.Header
+		class={[
+			'bg-background sticky w-full ',
+			stickyWithMonth
+				? 'top-[calc(108px+env(safe-area-inset-top))]'
+				: 'top-[calc(64px+env(safe-area-inset-top))]'
+		]}
+	>
 		<Accordion.Trigger
 			{onmousemove}
 			class={[

@@ -8,6 +8,7 @@
 	import dayjs from 'dayjs';
 	import { Dialog } from 'bits-ui';
 	import EntryDialog from '$lib/components/ui/entry-dialog.svelte';
+	import { calculateStreak } from '$lib/utils';
 
 	let q = $state('');
 
@@ -113,6 +114,9 @@
 						</div>
 					</Dialog.Trigger>
 					<EntryDialog
+						streak={result.entryDetails?.id
+							? calculateStreak(result.entryDetails?.id, entries.current ?? [])
+							: 0}
 						title={result.entryDetails
 							? dayjs(result.entryDetails.created).format('MMM DD, YYYY')
 							: ''}

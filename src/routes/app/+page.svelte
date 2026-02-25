@@ -1,5 +1,5 @@
 <script>
-	import { db, diaryUnlocked, entries, user } from '$lib/pocketbase/index.svelte';
+	import { db, entries, user } from '$lib/pocketbase/index.svelte';
 	import FlexCenter from '$lib/components/stacks/flex-center.svelte';
 	import ExistingLockScreen from '$lib/components/screens/ExistingLockScreen.svelte';
 	import PasswordCreationScreen from '$lib/components/screens/PasswordCreationScreen.svelte';
