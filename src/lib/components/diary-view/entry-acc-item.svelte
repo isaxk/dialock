@@ -28,7 +28,7 @@
 		<Accordion.Trigger
 			{onmousemove}
 			class={[
-				'flex w-full items-center gap-3 p-5 transition-all',
+				'flex w-full items-center gap-3 p-5 px-3 transition-all',
 				forceFullOpacity
 					? 'text-foreground'
 					: 'text-foreground/60 group-data-[state=open]:text-foreground '

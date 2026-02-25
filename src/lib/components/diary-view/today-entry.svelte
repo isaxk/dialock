@@ -3,7 +3,7 @@
 	import EntryAccItem from './entry-acc-item.svelte';
 	import { db, entries, user } from '$lib/pocketbase/index.svelte';
 	import { todayLoading, value } from '$lib/utils/state.svelte';
-	import { AlertCircle, Check, Circle, Save } from 'lucide-svelte';
+	import { AlertCircle, Check, Circle, LoaderCircleIcon, Save } from 'lucide-svelte';
 	import Button from '../ui/button.svelte';
 	import { text_area_resize } from '$lib/utils/autoresize-textarea';
 	import { beforeNavigate } from '$app/navigation';
@@ -69,8 +69,8 @@
 				</div>
 				<div class="text-border flex items-center gap-1 text-sm">
 					{#if todayLoading.current}
-						<div class="flex w-5 justify-center">
-							<Circle size={16} color="currentColor" />
+						<div class="flex w-5 animate-spin items-center justify-center">
+							<LoaderCircleIcon size={16} />
 						</div>
 						Saving...
 					{:else if unsavedChanges}
@@ -113,7 +113,7 @@
 		{#if value.current !== null}
 			<textarea
 				bind:this={textarea}
-				class="min-h-20 w-full resize-none px-5 py-2 outline-none"
+				class="min-h-20 w-full resize-none px-3 py-2 outline-none"
 				use:autosizeAction
 				bind:value={value.current}
 				onkeyup={() => {

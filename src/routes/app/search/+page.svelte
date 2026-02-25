@@ -77,7 +77,7 @@
 	);
 </script>
 
-<div class="pt-safe-top fixed top-16 right-0 left-0 z-100 px-4">
+<div class="pt-safe-top bg-background fixed top-16 right-0 left-0 z-100 px-4 pb-2">
 	<div class="flex w-full items-center justify-center gap-3">
 		<div class="w-full max-w-screen-sm grow sm:px-4">
 			<Input icon={Search} bind:value={q} placeholder="Search" fullWidth autofocus />
@@ -86,7 +86,7 @@
 </div>
 
 <ScreenContainer>
-	<div class="px-4 pt-36">
+	<div class="px-4 pt-16">
 		{#if results}
 			{#each results as result (result.id)}
 				<Dialog.Root>

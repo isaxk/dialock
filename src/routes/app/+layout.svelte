@@ -40,7 +40,7 @@
 
 {#key data.url}
 	<div
-		class="pt-safe-top pb-32"
+		class="pt-safe-top"
 		out:fade={{ duration: 100 }}
 		in:scale={{ duration: 200, start: 0.99, delay: 125 }}
 	>

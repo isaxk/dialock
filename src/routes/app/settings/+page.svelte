@@ -77,7 +77,7 @@
 			}}
 			unsavedChanges={entryTemplateValue !== user.current?.entry_template}
 			vertical
-			title="Entry template"
+			title="Template"
 			description="Give yourself some prompts. Not end-to-end encrypted, but still stored securely."
 		>
 			<Textarea bind:value={entryTemplateValue} />
