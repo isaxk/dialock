@@ -22,7 +22,7 @@
 		center && 'items-center justify-center',
 		screen ? 'min-h-screen w-screen' : 'h-full w-full',
 		padding && 'p-5',
-		fixed && 'fixed inset-0'
+		fixed && 'pb-safe-bottom fixed inset-0'
 	]}
 >
 	{#if children}
