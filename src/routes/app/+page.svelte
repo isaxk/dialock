@@ -10,7 +10,7 @@
 </script>
 
 {#if user.current && entries.current}
-	<FlexColWide padding screen>
+	<FlexColWide padding screen fixed>
 		<FlexCenter grow>
 			{#if entries.current.length > 0}
 				<ExistingLockScreen />
