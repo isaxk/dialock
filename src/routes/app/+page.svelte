@@ -19,15 +19,17 @@
 			{/if}
 		</FlexCenter>
 		<FlexCenter>
-			<Button
-				style="text"
-				shape="text"
-				size="sm"
-				stack="horizontal"
-				label="Sign out"
-				icon={LogOut}
-				onclick={db.logOut}
-			/>
+			<div class="pb-5">
+				<Button
+					style="text"
+					shape="text"
+					size="sm"
+					stack="horizontal"
+					label="Sign out"
+					icon={LogOut}
+					onclick={db.logOut}
+				/>
+			</div>
 		</FlexCenter>
 	</FlexColWide>
 {:else}
