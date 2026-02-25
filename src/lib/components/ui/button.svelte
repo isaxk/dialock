@@ -32,7 +32,8 @@
 			style === 'primary',
 		'bg-background text-foreground border-border hover:bg-foreground/10 justify-center':
 			style === 'secondary',
-		'bg-transparent text-foreground border-transparent pl-0 pr-0': style === 'text',
+		'bg-transparent text-foreground border-transparent pl-0 pr-0 hover:text-border dark:hover:text-primary':
+			style === 'text',
 		'items-center': stack === 'horizontal',
 		'flex-col items-center': stack === 'vertical',
 		'w-full': fullWidth,

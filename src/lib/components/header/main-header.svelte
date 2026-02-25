@@ -32,18 +32,20 @@
 		<DropdownMenu.Content
 			align="end"
 			sideOffset={sm.current ? 6 : 10}
-			class="bg-background border-border z-[10000] min-w-32 rounded-lg border px-1 py-2 text-sm drop-shadow-xs"
+			class="bg-background border-border z-[10000] min-w-32 rounded-lg border p-1 text-sm drop-shadow-xs"
 		>
 			<a href="/app/settings">
-				<DropdownMenu.Item class="flex items-center gap-1.5 p-3 py-1.5"
+				<DropdownMenu.Item class="hover:bg-primary/5 flex items-center gap-1.5 rounded p-3 py-2"
 					><Settings2 size={18} /> Settings</DropdownMenu.Item
 				>
 			</a>
-			<DropdownMenu.Item class="flex items-center gap-1.5 p-3 py-1.5" onclick={db.lockDiary}
-				><Lock size={18} /> Lock</DropdownMenu.Item
+			<DropdownMenu.Item
+				class="hover:bg-primary/5 flex items-center gap-1.5 rounded p-3 py-2"
+				onclick={db.lockDiary}><Lock size={18} /> Lock</DropdownMenu.Item
 			>
-			<DropdownMenu.Item class="flex items-center gap-1.5 p-3 py-1.5" onclick={db.logOut}
-				><LogOut size={18} /> Sign out</DropdownMenu.Item
+			<DropdownMenu.Item
+				class="hover:bg-primary/5 flex items-center gap-1.5 rounded p-3 py-2"
+				onclick={db.logOut}><LogOut size={18} /> Sign out</DropdownMenu.Item
 			>
 		</DropdownMenu.Content>
 	</DropdownMenu.Portal>
@@ -69,7 +71,7 @@
 		<a
 			href="/app/diary"
 			class={[
-				' flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
+				'hover:text-border dark:hover:text-primary/85 flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
 
 				page.url.pathname === '/app/diary'
 					? 'border-outline bg-primary text-background dark:text-primary dark:bg-transparent'
@@ -82,7 +84,7 @@
 		<a
 			href="/app/calendar/{dayjs().year()}/{dayjs().month() + 1}"
 			class={[
-				' flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
+				'hover:text-border dark:hover:text-primary/85 flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
 
 				page.url.pathname.includes('/app/calendar')
 					? 'border-outline bg-primary text-background dark:text-primary dark:bg-transparent'
@@ -95,7 +97,7 @@
 		<a
 			href="/app/search"
 			class={[
-				' flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
+				'hover:text-border dark:hover:text-primary/85 flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
 
 				page.url.pathname === '/app/search'
 					? 'border-outline bg-primary text-background dark:text-primary dark:bg-transparent'

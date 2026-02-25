@@ -17,7 +17,7 @@
 <Dialog.Root>
 	<Dialog.Trigger
 		class={[
-			'hover:bg-primary hover:text-background flex h-18 w-full flex-col p-3 py-1  text-left text-lg font-medium transition-all'
+			'hover:bg-primary group hover:text-background dark:hover:text-primary dark:hover:border-primary flex h-18 w-full flex-col border border-transparent p-3 py-1 text-left text-lg font-medium  transition-all dark:rounded dark:hover:bg-transparent'
 		]}
 	>
 		<div class="">
@@ -25,7 +25,7 @@
 		</div>
 		<div class="grow"></div>
 		<div
-			class="text-border flex w-full origin-bottom-right translate-x-2 scale-80 justify-end pb-0.5"
+			class="text-border group-hover:text-background dark:group-hover:text-primary dark:text-primary/40 flex w-full origin-bottom-right translate-x-2 scale-80 justify-end pb-0.5"
 		>
 			<EntryStreak {streak} />
 		</div>
