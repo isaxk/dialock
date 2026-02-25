@@ -17,6 +17,7 @@
 
 	let unsavedChanges = $state(false);
 	let textarea: HTMLTextAreaElement = $state();
+	let mounted = $state(false);
 
 	const debouncedUpdate = debounce(async () => {
 		await db.createOrUpdateEntry(value.current ?? '').then(() => {
@@ -50,6 +51,10 @@
 		if (textarea && value.current) {
 			autosizeAction.update(textarea);
 		}
+	});
+
+	onMount(() => {
+		mounted = true;
 	});
 
 	const potentialStreak = $derived.by(() => {
@@ -119,7 +124,7 @@
 		{/if}
 	{/snippet}
 	{#snippet content()}
-		{#if value.current !== null}
+		{#if value.current !== null && mounted}
 			<textarea
 				bind:this={textarea}
 				class="min-h-20 w-full resize-none px-3 py-2 outline-none"
