@@ -92,12 +92,7 @@
 				</div>
 			</div>
 		</div>
-		{#if potentialStreak}
-			<EntryStreak
-				streak={potentialStreak}
-				style={entries.current?.find((e) => e.today) ? 'secured' : 'at-risk'}
-			/>
-		{/if}
+
 		{#if user.current?.manual_save && unsavedChanges && !todayLoading.current}
 			<div class="gap-4 group-data-[state=open]:flex">
 				<Button
@@ -116,6 +111,11 @@
 					label="Submit"
 				/>
 			</div>
+		{:else if potentialStreak}
+			<EntryStreak
+				streak={potentialStreak}
+				style={entries.current?.find((e) => e.today) ? 'secured' : 'at-risk'}
+			/>
 		{/if}
 	{/snippet}
 	{#snippet content()}
