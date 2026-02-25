@@ -21,7 +21,7 @@
 		'flex flex-col gap-6',
 		center && 'items-center justify-center',
 		screen ? 'min-h-screen w-screen' : 'h-full w-full',
-		padding && 'p-5',
+		padding && 'p-5 pb-10',
 		fixed && 'pb-safe-bottom fixed inset-0'
 	]}
 >
