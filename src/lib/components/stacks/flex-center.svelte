@@ -11,7 +11,7 @@
 <div
 	class={[
 		'flex items-center justify-center',
-		screen ? 'h-screen w-screen' : 'h-full w-full',
+		screen ? 'h-screen w-screen' : 'w-full',
 		grow && 'flex-grow'
 	]}
 >
