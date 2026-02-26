@@ -7,7 +7,7 @@
 	import Button from '../ui/button.svelte';
 	import { text_area_resize } from '$lib/utils/autoresize-textarea';
 	import { beforeNavigate } from '$app/navigation';
-	import { calculateStreak, debounce } from '$lib/utils';
+	import { areAdjacentDays, calculateStreak, debounce } from '$lib/utils';
 	import autosizeAction from 'svelte-autosize';
 	import { onMount, tick } from 'svelte';
 	import { text } from '@sveltejs/kit';
@@ -60,7 +60,8 @@
 	const potentialStreak = $derived.by(() => {
 		if (!entries.current || !entries.current.length) return 0;
 		const mostRecentEntry = entries.current.findLast((entry) => !entry.today);
-		if (!mostRecentEntry) return 0;
+		if (!mostRecentEntry || !mostRecentEntry.created) return 0;
+		if (!areAdjacentDays(mostRecentEntry.created, dayjs().toISOString())) return 0;
 		return calculateStreak(mostRecentEntry.id, entries.current) + 1;
 	});
 </script>
