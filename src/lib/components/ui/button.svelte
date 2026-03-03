@@ -54,7 +54,7 @@
 				<Icon class="icon" size={size === 'sm' || size === 'xs' ? 18 : size === 'md' ? 18 : 24} />
 			</div>
 		{/if}
-		<div class={[hiddenLabel && 'hidden']}>
+		<div class={[hiddenLabel && 'hidden', 'text-nowrap']}>
 			{label}
 		</div>
 	</button>
@@ -65,7 +65,7 @@
 				<Icon class="icon" size={size === 'sm' || size === 'xs' ? 18 : size === 'md' ? 18 : 24} />
 			</div>
 		{/if}
-		<div class={[hiddenLabel && 'hidden']}>
+		<div class={[hiddenLabel && 'hidden', 'text-nowrap']}>
 			{label}
 		</div>
 	</a>

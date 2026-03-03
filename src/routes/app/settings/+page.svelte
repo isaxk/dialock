@@ -183,6 +183,13 @@
 				</DropdownMenu.Root>
 			{/if}
 		</SettingsItem>
+		<SettingsItem title="Account timezone" description="Currently {user.current?.time_zone}">
+			{#if user.current?.time_zone === dayjs.tz.guess()}
+				<div class="text-foreground/60 text-xs">Already matches local time</div>
+			{:else}
+				<Button style="secondary" label="Set to {dayjs.tz.guess()}" onclick={db.updateTimeZone} />
+			{/if}
+		</SettingsItem>
 		<SettingsItem title="Delete Account & Diary" description="Cannot be undone.">
 			<Alert
 				title="Are you sure you want to delete your account and diary?"

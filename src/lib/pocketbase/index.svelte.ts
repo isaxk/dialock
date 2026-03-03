@@ -17,10 +17,6 @@ const pb = new PocketBase(PUBLIC_POCKETBASE_URL);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-function testFunction(value) {
-	console.log('testFunction', value);
-}
-
 async function createOrUpdateEntry(value: string, manualDate?: string) {
 	console.log('createOrUpdateEntry');
 	console.log(user.current, password.current);
@@ -29,15 +25,6 @@ async function createOrUpdateEntry(value: string, manualDate?: string) {
 	const timezone = user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London';
 
 	todayLoading.current = true;
-	// entries.current?.push({
-	// 	loading: true,
-	// 	id: 'today',
-	// 	cipher_text: undefined,
-	// 	iv: undefined,
-	// 	user: user.current.id,
-	// 	created: dayjs().toISOString(),
-	// 	updated: dayjs().toISOString()
-	// });
 
 	const key = await deriveKey(password.current, user.current.salt);
 	const { ivHex, ctHex } = await encryptDiary(key, value);
@@ -255,7 +242,7 @@ export const db = {
 
 		recoveringBackup.current = true;
 
-		const backupResponse = checkForBackUps(entries.current);
+		const backupResponse = checkForBackUps(entries.current, user.current?.time_zone);
 
 		console.log('backupResponse', backupResponse);
 

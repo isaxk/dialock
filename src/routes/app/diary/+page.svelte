@@ -3,11 +3,14 @@
 	import DiaryEntry from '$lib/components/diary-view/diary-entry.svelte';
 
 	import TodayEntry from '$lib/components/diary-view/today-entry.svelte';
-	import { diaryUnlocked, entries } from '$lib/pocketbase/index.svelte';
+	import { db, diaryUnlocked, entries, user } from '$lib/pocketbase/index.svelte';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
 	import { groupByMonth } from '$lib/utils';
+	import dayjs from 'dayjs';
+	import Button from '$lib/components/ui/button.svelte';
+	import { Plane } from 'lucide-svelte';
 
 	let accordionVal = $state('today');
 
@@ -20,6 +23,36 @@
 
 <ScreenContainer>
 	{#if entries.current}
+		{#if user.current?.time_zone && user.current?.time_zone !== dayjs.tz.guess()}
+			<div class="p-2">
+				<div class="border-border flex gap-2 rounded-xl border p-3">
+					<div class="min-w-4 pt-0.5">
+						<Plane size={16} />
+					</div>
+					<div class="grow">
+						<div class="text-sm font-semibold">Travel mode enabled</div>
+
+						<div class="flex items-center gap-2">
+							<div class="text-foreground/80 grow text-xs">
+								Your diary will continue to roll over at 00:00 {user.current?.time_zone} time ({dayjs
+									.tz(undefined, user.current?.time_zone)
+									.set('hour', 0)
+									.set('minute', 0)
+									.tz(undefined)
+									.format('HH:mm')} local). If this is a long term change, you may want to update your
+								account timezone.
+							</div>
+							<!-- <Button
+								onclick={db.updateTimeZone}
+								style="secondary"
+								size="xs"
+								label={`Update to ${dayjs.tz.guess()}`}
+							/> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		{/if}
 		<Accordion.Root bind:value={accordionVal} type="single" class="flex h-full flex-col">
 			<TodayEntry />
 			{#each groupByMonth(entries.current

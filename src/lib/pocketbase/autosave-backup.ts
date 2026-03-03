@@ -1,4 +1,3 @@
-import type EntryAccItem from '$lib/components/diary-view/entry-acc-item.svelte';
 import dayjs from 'dayjs';
 import type { EntriesRecord } from './types';
 
@@ -16,7 +15,7 @@ export type BackUpResult = {
 	content: string;
 };
 
-export function checkForBackUps(entries: EntriesRecord[]) {
+export function checkForBackUps(entries: EntriesRecord[], timezone?: string) {
 	const requiredUpdates: BackUpResult[] = [];
 	const result = localStorage.getItem(KEY);
 
@@ -24,7 +23,9 @@ export function checkForBackUps(entries: EntriesRecord[]) {
 		const parsed: BackUp[] = JSON.parse(result);
 		if (!Array.isArray(parsed)) return [];
 		parsed.forEach((backup: BackUp) => {
-			const existingEntry = entries.find((e) => dayjs(e.created).isSame(backup.date, 'day'));
+			const existingEntry = entries.find((e) =>
+				dayjs(e.created).tz(timezone).isSame(dayjs(backup.date).tz(timezone), 'day')
+			);
 			if (!existingEntry) {
 				requiredUpdates.push({ doc_id: null, content: backup.content, date: backup.date });
 			} else {
