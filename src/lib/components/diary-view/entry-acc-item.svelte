@@ -2,6 +2,7 @@
 	import { Accordion } from 'bits-ui';
 	import { ChevronDown } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
+	import ScrollIntoView from '../ui/scroll-into-view.svelte';
 
 	let {
 		id,
@@ -51,6 +52,7 @@
 		{#snippet child({ props, open })}
 			{#if open && !hideContent}
 				<div {...props} class="pb-10 font-serif whitespace-break-spaces">
+					<ScrollIntoView />
 					{@render content()}
 				</div>
 			{/if}

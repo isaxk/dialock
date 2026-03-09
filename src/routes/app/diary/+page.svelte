@@ -67,7 +67,10 @@
 					</div>
 				{/if}
 				{#each group.entries as entry (entry.id)}
-					<DiaryEntry stickyWithMonth={i !== 0} {entry} />
+					<DiaryEntry
+						stickyWithMonth={dayjs().month() !== dayjs(group.entries[0].created).month()}
+						{entry}
+					/>
 				{/each}
 			{/each}
 		</Accordion.Root>
