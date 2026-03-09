@@ -30,4 +30,4 @@
 	});
 </script>
 
-<div style:scroll-margin="150px" bind:this={elm}></div>
+<div style:scroll-margin="150px" class="contents h-0" bind:this={elm}></div>

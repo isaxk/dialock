@@ -28,7 +28,7 @@
 		<EntryStreak {streak} />
 	{/snippet}
 	{#snippet content()}
-		<div class="p-5 px-3">
+		<div class="p-5 px-3 pt-2">
 			{decryptedValue}
 		</div>
 	{/snippet}

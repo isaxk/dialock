@@ -51,9 +51,11 @@
 	<Accordion.Content forceMount={true}>
 		{#snippet child({ props, open })}
 			{#if open && !hideContent}
-				<div {...props} class="pb-10 font-serif whitespace-break-spaces">
+				<div {...props} class="pb-10">
 					<ScrollIntoView />
-					{@render content()}
+					<div class="font-serif whitespace-break-spaces">
+						{@render content()}
+					</div>
 				</div>
 			{/if}
 		{/snippet}
