@@ -3,6 +3,7 @@
 	import Button from '../ui/button.svelte';
 	import { Check } from 'lucide-svelte';
 	import { Circle } from 'svelte-loading-spinners';
+	import { MediaQuery } from 'svelte/reactivity';
 
 	let {
 		title,
@@ -27,6 +28,8 @@
 		await onSave?.();
 		saving = false;
 	}
+
+	const sm = new MediaQuery('(min-width: 640px)');
 </script>
 
 <div class={['flex', vertical ? 'flex-col gap-4' : 'flex-row items-center gap-1']}>
@@ -57,7 +60,7 @@
 		{/if}
 	</div>
 	{#if !vertical && onSave !== undefined}
-		<div class="flex w-56 gap-1">
+		<div class="flex w-48 gap-1 sm:w-56">
 			{@render children()}
 			{#if (unsavedChanges || saving) && !vertical}
 				<div class="flex h-full items-center justify-center gap-2">
