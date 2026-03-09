@@ -3,7 +3,9 @@
 	import FlexThin from '$lib/components/stacks/flex-thin.svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import { db, user } from '$lib/pocketbase/index.svelte';
-	import screenshot from '$assets/screenshot.png';
+	import screenshotLight from '$assets/screenshot-light.png';
+	import screenshotDark from '$assets/screenshot-dark.png';
+	import { theme } from 'mode-watcher';
 </script>
 
 <div class="flex w-screen justify-center">
@@ -31,19 +33,22 @@
 				<Button
 					onclick={() => {
 						db.loginInWithGoogle().then(() => {
-							goto('/app');
+							goto('/app', { replaceState: true });
 						});
 					}}
 					label="Sign In With Google"
 				/>
 			{/if}
 			<a href="https://github.com/isaxk/dialock" class="text-foreground/80 block pt-2 underline"
-				>View on GitHub</a
+				>View on GitHub {theme.current}</a
 			>
 		</div>
 		<div>
-			<div class="border-border bg-background rounded-xl border p-5 drop-shadow-sm">
-				<img src={screenshot} class="sm:w-82" alt="" />
+			<div
+				class="border-border bg-background aspect-square h-84 max-h-[50vh] rounded-xl border p-4 drop-shadow-sm sm:h-auto"
+			>
+				<img src={screenshotDark} class="hidden h-full sm:w-82 dark:block" alt="" />
+				<img src={screenshotLight} class="block h-full sm:w-82 dark:hidden" alt="" />
 			</div>
 		</div>
 	</div>

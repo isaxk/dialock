@@ -25,6 +25,9 @@
 	} from 'lucide-svelte';
 	import { mode, resetMode, setMode } from 'mode-watcher';
 	import { MediaQuery, type SvelteMap } from 'svelte/reactivity';
+	import Input from '$lib/components/ui/input.svelte';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	const md = new MediaQuery('(min-width: 768px)');
 
@@ -59,12 +62,36 @@
 		});
 	});
 
+	onMount(() => {
+		window.onbeforeunload = () => {
+			if (
+				entryTemplateValue !== user.current?.entry_template ||
+				nicknameValue !== user.current?.name
+			) {
+				return 'Changes made to settings will be lost.';
+			}
+		};
+	});
+
 	let entryTemplateValue = $state(user.current?.entry_template ?? '');
+	let nicknameValue = $state(user.current?.name ?? '');
 </script>
 
 <HeaderContainer>
 	<FlexThin center>
-		<Button type="link" href="/app/diary" icon={ArrowLeft} style="text" />
+		{#if entryTemplateValue !== user.current?.entry_template || nicknameValue !== user.current?.name}
+			<Button
+				onclick={() => {
+					if (confirm('You have unsaved changes. Are you sure you want to go back?')) {
+						goto('/app/diary');
+					}
+				}}
+				icon={ArrowLeft}
+				style="text"
+			/>
+		{:else}
+			<Button type="link" href="/app/diary" icon={ArrowLeft} style="text" />
+		{/if}
 		<div class="text-xl font-semibold">Settings</div>
 	</FlexThin>
 </HeaderContainer>
@@ -182,6 +209,18 @@
 					</DropdownMenu.Portal>
 				</DropdownMenu.Root>
 			{/if}
+		</SettingsItem>
+		<SettingsItem
+			title="Nickname"
+			onSave={async () => {
+				if (nicknameValue !== '') {
+					await db.updateGenericSettings({ name: nicknameValue });
+				}
+			}}
+			unsavedChanges={nicknameValue !== user.current?.name && nicknameValue !== ''}
+			description="What should we call you?"
+		>
+			<Input fullWidth bind:value={nicknameValue} placeholder="Enter nickname..." />
 		</SettingsItem>
 		<SettingsItem title="Account timezone" description="Currently {user.current?.time_zone}">
 			{#if user.current?.time_zone === dayjs.tz.guess()}

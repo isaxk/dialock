@@ -58,7 +58,7 @@
 			{#each groupByMonth(entries.current
 					.filter((entry) => !entry.today)
 					.toReversed()) as group, i (group.month)}
-				{#if i !== 0}
+				{#if dayjs().month() !== dayjs(group.entries[0].created).month()}
 					<div class="pt-10"></div>
 					<div
 						class="bg-background sticky top-[calc(64px+env(safe-area-inset-top))] z-20 p-3 text-lg font-semibold"

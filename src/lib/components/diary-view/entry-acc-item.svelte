@@ -24,7 +24,7 @@
 
 <Accordion.Item
 	value={id}
-	class={['border-foreground/20 group flex-grow border-b last:border-none']}
+	class={['border-foreground/10 group flex-grow border-b last:border-none']}
 >
 	<Accordion.Header
 		class={[

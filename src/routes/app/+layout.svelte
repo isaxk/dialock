@@ -16,14 +16,16 @@
 
 	$effect(() => {
 		if (!user.current && !data.pwa) {
-			goto('/');
+			goto('/', { replaceState: true });
 		}
 		mounted = true;
 	});
 
 	$effect(() => {
 		if (!diaryUnlocked.current && page.url.pathname !== '/app') {
-			goto(page.url.pathname === '/app/diary' ? '/app' : '/app?afterUnlock=' + page.url.pathname);
+			goto(page.url.pathname === '/app/diary' ? '/app' : '/app?afterUnlock=' + page.url.pathname, {
+				replaceState: true
+			});
 		}
 	});
 	onMount(() => {
