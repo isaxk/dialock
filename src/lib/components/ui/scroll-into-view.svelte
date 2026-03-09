@@ -23,11 +23,15 @@
 	}
 
 	onMount(() => {
-		console.log(isElementInViewport(elm));
 		if (!isElementInViewport(elm)) {
 			elm?.scrollIntoView({ block: 'start', inline: 'start' });
 		}
+		setTimeout(() => {
+			if (!isElementInViewport(elm)) {
+				elm?.scrollIntoView({ block: 'start', inline: 'start' });
+			}
+		});
 	});
 </script>
 
-<div style:scroll-margin="150px" class="contents h-0" bind:this={elm}></div>
+<div style:scroll-margin="170px" class="" bind:this={elm}></div>
