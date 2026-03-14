@@ -6,6 +6,6 @@ import devtoolsJson from 'vite-plugin-devtools-json';
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit(), devtoolsJson()],
 	server: {
-		allowedHosts: ['positioning-villa-watches-maine.trycloudflare.com']
+		allowedHosts: ['warm-slight-kelkoo-shell.trycloudflare.com']
 	}
 });

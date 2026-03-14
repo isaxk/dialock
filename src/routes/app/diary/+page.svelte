@@ -9,6 +9,7 @@
 	import DiaryEntry from '$lib/components/diary-view/diary-entry.svelte';
 	import TodayEntry from '$lib/components/diary-view/today-entry.svelte';
 	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
+	import Avatar from '$lib/components/ui/avatar.svelte';
 	import { diaryUnlocked, entries, user } from '$lib/pocketbase/index.svelte';
 	import { groupByMonth } from '$lib/utils';
 
@@ -23,6 +24,17 @@
 
 <ScreenContainer>
 	{#if entries.current}
+		<div class="flex items-center gap-3 p-3">
+			{#if user.current?.avatar}
+				<Avatar user={user.current.id} avatar={user.current.avatar} />
+			{/if}
+			<!-- {#if !showMainHeader} -->
+			<div class="text-md">
+				<span class="font-semibold">{user.current?.name}</span>'s diary
+			</div>
+			<!-- {/if} -->
+		</div>
+
 		{#if user.current?.time_zone && user.current?.time_zone !== dayjs.tz.guess()}
 			<div class="p-2">
 				<div class="border-border flex gap-2 rounded-xl border p-3">

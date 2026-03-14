@@ -4,6 +4,7 @@
 
 	import dayjs from 'dayjs';
 	import { onMount, type Snippet } from 'svelte';
+	import { MediaQuery } from 'svelte/reactivity';
 	import { fade, scale } from 'svelte/transition';
 
 	import MainHeader from '$lib/components/header/main-header.svelte';
@@ -37,9 +38,15 @@
 		preloadCode('/app/search');
 		preloadCode('/app/settings');
 	});
+
+	const sm = new MediaQuery('(min-width: 640px)');
 </script>
 
-{#if (data.url === '/app/diary' || data.url.includes('/app/calendar') || data.url === '/app/search') && diaryUnlocked.current}
+{#if !sm.current}
+	<div class="bg-background h-safe-top fixed top-0 right-0 left-0 z-60"></div>
+{/if}
+
+{#if (data.url.includes('/app/calendar') || data.url === '/app/search' || data.url === '/app/diary') && diaryUnlocked.current}
 	<MainHeader />
 {/if}
 

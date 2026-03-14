@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Accordion } from 'bits-ui';
 	import { ChevronDown } from 'lucide-svelte';
-
 	import { onMount, type Snippet } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 

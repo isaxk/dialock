@@ -79,24 +79,33 @@
 	let nicknameValue = $state(user.current?.name ?? '');
 </script>
 
-<HeaderContainer>
-	<FlexThin center>
-		{#if entryTemplateValue !== user.current?.entry_template || nicknameValue !== user.current?.name}
-			<Button
-				onclick={() => {
-					if (confirm('You have unsaved changes. Are you sure you want to go back?')) {
-						goto('/app/diary');
-					}
-				}}
-				icon={ArrowLeft}
-				style="text"
-			/>
-		{:else}
-			<Button type="link" href="/app/diary" icon={ArrowLeft} style="text" />
-		{/if}
-		<div class="text-xl font-semibold">Settings</div>
-	</FlexThin>
-</HeaderContainer>
+<div
+	class={[
+		'bg-background shadow-background pt-safe-top pointer-events-none fixed top-0 right-0 left-0 z-50 shadow-lg'
+	]}
+>
+	<div
+		class="border-foreground/30 pointer-events-auto mx-auto flex w-full max-w-screen-sm items-center gap-2.5 px-5 pb-4"
+	>
+		<FlexThin center>
+			{#if entryTemplateValue !== user.current?.entry_template || nicknameValue !== user.current?.name}
+				<Button
+					onclick={() => {
+						if (confirm('You have unsaved changes. Are you sure you want to go back?')) {
+							goto('/app/diary');
+						}
+					}}
+					icon={ArrowLeft}
+					style="text"
+				/>
+			{:else}
+				<Button type="link" href="/app/diary" icon={ArrowLeft} style="text" />
+			{/if}
+			<div class="text-xl font-semibold">Settings</div>
+		</FlexThin>
+	</div>
+</div>
+<div class="pt-safe-top"></div>
 
 <ScreenContainer>
 	<FlexColWide padding>

@@ -52,20 +52,7 @@
 	</DropdownMenu.Portal>
 {/snippet}
 
-<HeaderContainer>
-	{#if user.current}
-		{#if user.current.avatar}
-			<Avatar user={user.current.id} avatar={user.current.avatar} />
-		{/if}
-		{#if !showMainHeader}
-			<div class="text-md" transition:fade={{ duration: 200 }}>
-				<span class="font-semibold">{user.current.name}</span>'s diary
-			</div>
-		{/if}
-	{/if}
-
-	<div class="flex-grow"></div>
-
+{#snippet tabs()}
 	<div
 		class="border-border pb-safe-bottom bg-background fixed right-0 bottom-0 left-0 z-60 flex items-center gap-0.5 rounded-none border-t p-1 sm:static sm:rounded-lg sm:border sm:p-0.5"
 	>
@@ -120,24 +107,44 @@
 			</DropdownMenu.Root>
 		{/if}
 	</div>
+{/snippet}
 
-	{#if sm.current}
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger>
-				<Button
-					onclick={() => (showMainHeader = true)}
-					style="text"
-					size="xs"
-					stack="vertical"
-					icon={MenuIcon}
-					label="Menu"
-				/>
-			</DropdownMenu.Trigger>
-			{@render menu()}
-		</DropdownMenu.Root>
-	{/if}
+{#if sm.current}
+	<HeaderContainer>
+		{#if user.current}
+			{#if user.current.avatar}
+				<Avatar user={user.current.id} avatar={user.current.avatar} />
+			{/if}
+			{#if !showMainHeader}
+				<div class="text-md" transition:fade={{ duration: 200 }}>
+					<span class="font-semibold">{user.current.name}</span>'s diary
+				</div>
+			{/if}
+		{/if}
 
-	<!-- {#if md.current || showMainHeader}
+		<div class="flex-grow"></div>
+
+		{#if sm.current}
+			{@render tabs()}
+		{/if}
+
+		{#if sm.current}
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger>
+					<Button
+						onclick={() => (showMainHeader = true)}
+						style="text"
+						size="xs"
+						stack="vertical"
+						icon={MenuIcon}
+						label="Menu"
+					/>
+				</DropdownMenu.Trigger>
+				{@render menu()}
+			</DropdownMenu.Root>
+		{/if}
+
+		<!-- {#if md.current || showMainHeader}
 		<div
 			transition:fly={{ x: 100, duration: 200 }}
 			class={[
@@ -175,7 +182,7 @@
 		</div>
 	{:else}{/if} -->
 
-	<!-- {#if !md.current}
+		<!-- {#if !md.current}
 		{#if showMainHeader}
 			<Button
 				onclick={() => (showMainHeader = false)}
@@ -196,4 +203,7 @@
 			/>
 		{/if}
 	{/if} -->
-</HeaderContainer>
+	</HeaderContainer>
+{:else}
+	{@render tabs()}
+{/if}

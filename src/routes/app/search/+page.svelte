@@ -78,9 +78,9 @@
 </script>
 
 <div
-	class="pt-safe-top to-background via-background pointer-events-none fixed top-16 right-0 left-0 z-60 bg-gradient-to-t via-50% px-4 pb-8"
+	class="pt-safe-top to-background via-background pointer-events-none fixed top-0 right-0 left-0 z-0 bg-gradient-to-t via-50% px-4 pb-8 sm:top-16"
 >
-	<div class="flex w-full items-center justify-center gap-3">
+	<div class="flex w-full items-center justify-center gap-3 pt-2">
 		<div class="pointer-events-auto w-full max-w-screen-sm grow sm:px-4">
 			<Input icon={Search} bind:value={q} placeholder="Search" fullWidth autofocus />
 		</div>
