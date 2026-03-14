@@ -43,16 +43,15 @@
 >
 	<Accordion.Header
 		bind:ref={headerElm}
-		style="background-image: linear-gradient(to bottom, transparent, var(--color-background), var(--color-background), transparent)"
 		class={[
-			'sticky z-0 w-full pt-3 pb-3 data-[state=open]:z-20',
+			'bg-background shadow-background sticky z-0 w-full shadow-xl  data-[state=open]:z-20',
 			'top-[calc(54px+env(safe-area-inset-top))]'
 		]}
 	>
 		<Accordion.Trigger
 			{onmousemove}
 			class={[
-				'flex w-full items-center gap-3 px-3 py-2  transition-colors',
+				'flex w-full items-center gap-3 px-3 py-6  transition-colors',
 				forceFullOpacity
 					? 'text-foreground'
 					: 'text-foreground/60 group-data-[state=open]:text-foreground '
@@ -67,7 +66,7 @@
 	<Accordion.Content forceMount={true}>
 		{#snippet child({ props, open })}
 			{#if open && !hideContent}
-				<div {...props} class="pb-10">
+				<div {...props} class="pt-2 pb-10">
 					{@render content()}
 				</div>
 			{/if}
