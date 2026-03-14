@@ -32,4 +32,4 @@
 	});
 </script>
 
-<div style:scroll-margin="170px" class="" bind:this={elm}></div>
+<div style:scroll-margin="180px" class="" bind:this={elm}></div>
