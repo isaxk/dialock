@@ -32,8 +32,8 @@
 	<DropdownMenu.Portal>
 		<DropdownMenu.Content
 			align="end"
-			sideOffset={sm.current ? 6 : 10}
-			class="bg-background border-border z-[10000] min-w-32 rounded-lg border p-1 text-sm drop-shadow-xs"
+			sideOffset={sm.current ? 4 : 10}
+			class="bg-background border-border z-[10000] min-w-32 rounded-lg border p-1 text-sm drop-shadow-lg"
 		>
 			<a href="/app/settings">
 				<DropdownMenu.Item class="hover:bg-primary/5 flex items-center gap-1.5 rounded p-3 py-2"

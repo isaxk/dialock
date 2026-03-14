@@ -25,7 +25,7 @@
 		</div>
 		<input
 			class={[
-				'border-border focus:outline-outline rounded-lg border p-2 px-3 pl-10 outline-2 -outline-offset-2 outline-transparent transition-all outline-solid',
+				'border-border bg-background focus:outline-outline rounded-lg border p-2 px-3 pl-10 outline-2 -outline-offset-2 outline-transparent transition-all outline-solid',
 				fullWidth && 'w-full'
 			]}
 			{type}

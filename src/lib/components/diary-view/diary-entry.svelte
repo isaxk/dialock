@@ -19,11 +19,11 @@
 </script>
 
 <EntryAccItem {stickyWithMonth} id={entry.id} hideContent={entry.loading}>
-	{#snippet header()}
-		<div class="font-semibold">
+	{#snippet header(isSticky)}
+		<div class={['font-semibold transition-all']}>
 			{dayjs(entry.created)
 				.tz(user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London')
-				.format('ddd DD')}
+				.format(isSticky ? 'ddd DD MMMM YYYY' : 'ddd DD')}
 		</div>
 		<div>
 			{#if entry.loading}Uploading...{/if}

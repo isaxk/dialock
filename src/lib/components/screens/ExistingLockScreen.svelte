@@ -38,7 +38,7 @@
 				{#if incorrectPassword.current}
 					<Wiggler message="Incorrect password" />
 				{:else if recoveringBackup.current}
-					Recovering backup...
+					<div class="text-sm">Recovering local backup...</div>
 				{/if}
 			</div>
 		</FlexColThin>

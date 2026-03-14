@@ -59,20 +59,23 @@
 			{#each groupByMonth(entries.current
 					.filter((entry) => !entry.today)
 					.toReversed()) as group (group.month)}
-				{#if dayjs().month() !== dayjs(group.entries[0].created).month()}
-					<div class="pt-10"></div>
-					<div
-						class="bg-background sticky top-[calc(64px+env(safe-area-inset-top))] z-20 p-3 text-lg font-semibold"
-					>
-						{group.month}
-					</div>
-				{/if}
-				{#each group.entries as entry (entry.id)}
-					<DiaryEntry
-						stickyWithMonth={dayjs().month() !== dayjs(group.entries[0].created).month()}
-						{entry}
-					/>
-				{/each}
+				<div>
+					{#if dayjs().month() !== dayjs(group.entries[0].created).month()}
+						<div class="pt-10"></div>
+						<div
+							class="to-background via-background pointer-events-none sticky top-[calc(64px+env(safe-area-inset-top))] z-10 -mb-14 bg-gradient-to-t via-40% p-3 pb-10 text-lg font-semibold"
+						>
+							{group.month}
+						</div>
+						<div class="pb-5"></div>
+					{/if}
+					{#each group.entries as entry (entry.id)}
+						<DiaryEntry
+							stickyWithMonth={dayjs().month() !== dayjs(group.entries[0].created).month()}
+							{entry}
+						/>
+					{/each}
+				</div>
 			{/each}
 		</Accordion.Root>
 	{/if}

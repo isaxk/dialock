@@ -21,7 +21,7 @@
 	let mounted = $state(false);
 
 	const debouncedUpdate = debounce(async () => {
-		await db.createOrUpdateEntry(value.current ?? '').then(() => {
+		await db.createOrUpdateEntryForDate(value.current ?? '').then(() => {
 			clearBackups();
 		});
 		unsavedChanges = false;
@@ -41,7 +41,7 @@
 				cancel();
 				alert('You have unsaved changes');
 			} else {
-				db.createOrUpdateEntry(value.current ?? '').then(() => {
+				db.createOrUpdateEntryForDate(value.current ?? '').then(() => {
 					unsavedChanges = false;
 				});
 			}
