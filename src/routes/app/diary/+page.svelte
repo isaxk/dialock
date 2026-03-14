@@ -63,11 +63,12 @@
 					{#if dayjs().month() !== dayjs(group.entries[0].created).month()}
 						<div class="pt-10"></div>
 						<div
-							class="to-background via-background pointer-events-none sticky top-[calc(64px+env(safe-area-inset-top))] z-10 -mb-14 bg-gradient-to-t via-40% p-3 pb-10 text-lg font-semibold"
+							class="bg-background pt-safe-top pointer-events-none sticky top-0 z-10 sm:top-[calc(64px+env(safe-area-inset-top))] sm:pt-3"
 						>
-							{group.month}
+							<div class="shadow-background p-3 text-lg font-semibold shadow-md">
+								{group.month}
+							</div>
 						</div>
-						<div class="pb-5"></div>
 					{/if}
 					{#each group.entries as entry (entry.id)}
 						<DiaryEntry

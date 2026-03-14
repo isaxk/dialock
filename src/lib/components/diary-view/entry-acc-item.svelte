@@ -3,6 +3,7 @@
 	import { ChevronDown } from 'lucide-svelte';
 
 	import { onMount, type Snippet } from 'svelte';
+	import { MediaQuery } from 'svelte/reactivity';
 
 	let {
 		id,
@@ -25,10 +26,12 @@
 	let headerElm: HTMLElement | null = $state(null);
 	let isSticky = $state(false);
 
+	const sm = new MediaQuery('(min-width: 640px)');
+
 	function checkStickyness() {
 		if (headerElm) {
 			const rect = headerElm.getBoundingClientRect();
-			isSticky = rect.top <= (stickyWithMonth ? 54 : 5);
+			isSticky = rect.top <= (stickyWithMonth ? (sm.current ? 54 : 5) : 5);
 		}
 	}
 
@@ -37,21 +40,17 @@
 	});
 </script>
 
-<Accordion.Item
-	value={id}
-	class={['border-foreground/10 group flex-grow border-b last:border-none']}
->
+<Accordion.Item value={id} class={['border-foreground/10 group flex-grow border-b']}>
 	<Accordion.Header
 		bind:ref={headerElm}
 		class={[
-			'bg-background shadow-background sticky z-0 w-full shadow-xl  data-[state=open]:z-20',
-			'top-[calc(54px+env(safe-area-inset-top))]'
+			'bg-background pt-safe-top shadow-background sticky top-0 z-0 w-full data-[state=open]:z-20 data-[state=open]:shadow-lg sm:top-[calc(54px+env(safe-area-inset-top))] sm:p-0'
 		]}
 	>
 		<Accordion.Trigger
 			{onmousemove}
 			class={[
-				'flex w-full items-center gap-3 px-3 py-6  transition-colors',
+				'flex w-full items-center gap-3 px-3 py-5  transition-colors',
 				forceFullOpacity
 					? 'text-foreground'
 					: 'text-foreground/60 group-data-[state=open]:text-foreground '

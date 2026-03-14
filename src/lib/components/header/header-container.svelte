@@ -8,7 +8,7 @@
 	style:top
 	transition:fade|global={{ duration: 200 }}
 	class={[
-		'pt-safe-top bg-background shadow-background pointer-events-none fixed top-0 right-0 left-0 z-50 shadow-md'
+		'pt-safe-top bg-background shadow-background pointer-events-none top-0 right-0 left-0 z-50 shadow-md sm:fixed'
 	]}
 >
 	<div
