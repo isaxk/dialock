@@ -1,26 +1,27 @@
 <script lang="ts">
-	import HeaderContainer from './header-container.svelte';
-	import Avatar from '../ui/avatar.svelte';
-	import { db, user } from '$lib/pocketbase/index.svelte';
-	import Button from '../ui/button.svelte';
+	import { page } from '$app/state';
+
+	import { DropdownMenu } from 'bits-ui';
+	import dayjs from 'dayjs';
 	import {
 		CalendarIcon,
 		GalleryVertical,
-		List,
 		Lock,
 		LogOut,
 		Menu,
 		MenuIcon,
 		Search,
-		Settings2,
-		XIcon
+		Settings2
 	} from 'lucide-svelte';
-	import FlexWide from '../stacks/flex-wide.svelte';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { fade, fly } from 'svelte/transition';
-	import { DropdownMenu } from 'bits-ui';
-	import { page } from '$app/state';
-	import dayjs from 'dayjs';
+	import { fade } from 'svelte/transition';
+
+	import { db, user } from '$lib/pocketbase/index.svelte';
+
+	import Avatar from '../ui/avatar.svelte';
+	import Button from '../ui/button.svelte';
+
+	import HeaderContainer from './header-container.svelte';
 
 	let showMainHeader = $state(false);
 

@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { ModeWatcher, theme } from 'mode-watcher';
 	import { onMount } from 'svelte';
+
 	import '../app.css';
 	import { db } from '$lib/pocketbase/index.svelte';
-	import { ModeWatcher, theme } from 'mode-watcher';
 
 	let { children } = $props();
 

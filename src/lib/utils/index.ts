@@ -1,5 +1,6 @@
-import type { EntriesStoreItem } from '$lib/types/types';
 import dayjs, { Dayjs } from 'dayjs';
+
+import type { EntriesStoreItem } from '$lib/types/types';
 
 export function throttle<T extends (this: U, ...args: A) => R, U, A extends unknown[], R>(
 	fn: T,

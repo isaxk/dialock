@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { goto, preloadCode } from '$app/navigation';
 	import { page } from '$app/state';
-	import { db, diaryUnlocked, user } from '$lib/pocketbase/index.svelte';
-	import { onMount, type Snippet } from 'svelte';
-	import type { PageData } from './$types';
-	import { fade, scale } from 'svelte/transition';
-	import Button from '$lib/components/ui/button.svelte';
-	import Loading from '$lib/components/screens/Loading.svelte';
-	import MainHeader from '$lib/components/header/main-header.svelte';
+
 	import dayjs from 'dayjs';
+	import { onMount, type Snippet } from 'svelte';
+	import { fade, scale } from 'svelte/transition';
+
+	import MainHeader from '$lib/components/header/main-header.svelte';
+	import Loading from '$lib/components/screens/Loading.svelte';
+	import Button from '$lib/components/ui/button.svelte';
+	import { db, diaryUnlocked, user } from '$lib/pocketbase/index.svelte';
+
+	import type { PageData } from './$types';
 
 	let { children, data }: { children: Snippet; data: PageData } = $props();
 

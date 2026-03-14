@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { Lock } from 'lucide-svelte';
+	import { fade } from 'svelte/transition';
+
+	import { db } from '$lib/pocketbase/index.svelte';
+
 	import IconHeader from '../header/icon-header.svelte';
 	import FlexColThin from '../stacks/flex-col-thin.svelte';
 	import FlexColWide from '../stacks/flex-col-wide.svelte';
-	import Input from '../ui/input.svelte';
-	import Button from '../ui/button.svelte';
-	import { db } from '$lib/pocketbase/index.svelte';
-	import Wiggler from '../ui/wiggler.svelte';
 	import MaxW from '../stacks/max-w.svelte';
-	import { fade } from 'svelte/transition';
+	import Button from '../ui/button.svelte';
+	import Input from '../ui/input.svelte';
+	import Wiggler from '../ui/wiggler.svelte';
 
 	let value = $state('');
 	let confirm = $state('');
@@ -43,7 +45,7 @@
 				<li class="w-max">
 					If you forget it, you will <span class="font-semibold">lose access</span> to your diary
 				</li>
-				<li class="w-max">Store it somewhere safe and secure</li>
+				<li class="w-max">Store it secure, seperate from your Google Account</li>
 			</ul>
 		</div>
 		<MaxW w="2xs">

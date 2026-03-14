@@ -1,22 +1,23 @@
 <script lang="ts">
-	import dayjs from 'dayjs';
-	import EntryAccItem from './entry-acc-item.svelte';
-	import { db, entries, user } from '$lib/pocketbase/index.svelte';
-	import { todayLoading, value } from '$lib/utils/state.svelte';
-	import { AlertCircle, Check, Circle, LoaderCircleIcon, Save } from 'lucide-svelte';
-	import Button from '../ui/button.svelte';
-	import { text_area_resize } from '$lib/utils/autoresize-textarea';
 	import { beforeNavigate } from '$app/navigation';
-	import { areAdjacentDays, calculateStreak, debounce } from '$lib/utils';
+
+	import dayjs from 'dayjs';
+	import { AlertCircle, Check, LoaderCircleIcon, Save } from 'lucide-svelte';
+	import { onMount } from 'svelte';
 	import autosizeAction from 'svelte-autosize';
-	import { onMount, tick } from 'svelte';
-	import { text } from '@sveltejs/kit';
-	import Textarea from '../ui/textarea.svelte';
+
 	import { clearBackups, saveBackUp } from '$lib/pocketbase/autosave-backup';
+	import { db, entries, user } from '$lib/pocketbase/index.svelte';
+	import { areAdjacentDays, calculateStreak, debounce } from '$lib/utils';
+	import { todayLoading, value } from '$lib/utils/state.svelte';
+
+	import Button from '../ui/button.svelte';
+
+	import EntryAccItem from './entry-acc-item.svelte';
 	import EntryStreak from './entry-streak.svelte';
 
 	let unsavedChanges = $state(false);
-	let textarea: HTMLTextAreaElement = $state();
+	let textarea: HTMLTextAreaElement | undefined = $state();
 	let mounted = $state(false);
 
 	const debouncedUpdate = debounce(async () => {
@@ -28,7 +29,7 @@
 
 	function handleSaveBackup() {
 		const date = dayjs().format('YYYY-MM-DD');
-		const content = textarea.value;
+		const content = textarea?.value ?? '';
 		saveBackUp(date, content);
 	}
 
@@ -128,9 +129,10 @@
 		{#if value.current !== null && mounted}
 			<textarea
 				bind:this={textarea}
-				class="min-h-20 w-full resize-none px-3 py-2 outline-none"
+				class="min-h-20 w-full resize-none px-3 py-2 font-serif outline-none"
 				use:autosizeAction
 				bind:value={value.current}
+				placeholder="Start writing your entry here..."
 				onkeyup={() => {
 					unsavedChanges = true;
 					if (!user.current?.manual_save) {

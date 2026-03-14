@@ -1,16 +1,7 @@
 <script lang="ts">
-	import HeaderContainer from '$lib/components/header/header-container.svelte';
-	import SettingsItem from '$lib/components/settings/settings-item.svelte';
-	import FlexColWide from '$lib/components/stacks/flex-col-wide.svelte';
-	import FlexThin from '$lib/components/stacks/flex-thin.svelte';
-	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
-	import Alert from '$lib/components/ui/alert.svelte';
-	import Button from '$lib/components/ui/button.svelte';
-	import Textarea from '$lib/components/ui/textarea.svelte';
-	import JsonLink from '$lib/components/util/json-link.svelte';
-	import { db, decrypted, entries, user } from '$lib/pocketbase/index.svelte';
+	import { goto } from '$app/navigation';
+
 	import { DropdownMenu } from 'bits-ui';
-	import Switch from '$lib/components/ui/switch.svelte';
 	import dayjs from 'dayjs';
 	import {
 		ArrowLeft,
@@ -24,10 +15,21 @@
 		Trash2
 	} from 'lucide-svelte';
 	import { mode, resetMode, setMode } from 'mode-watcher';
-	import { MediaQuery, type SvelteMap } from 'svelte/reactivity';
-	import Input from '$lib/components/ui/input.svelte';
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { MediaQuery, type SvelteMap } from 'svelte/reactivity';
+
+	import HeaderContainer from '$lib/components/header/header-container.svelte';
+	import SettingsItem from '$lib/components/settings/settings-item.svelte';
+	import FlexColWide from '$lib/components/stacks/flex-col-wide.svelte';
+	import FlexThin from '$lib/components/stacks/flex-thin.svelte';
+	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
+	import Alert from '$lib/components/ui/alert.svelte';
+	import Button from '$lib/components/ui/button.svelte';
+	import Input from '$lib/components/ui/input.svelte';
+	import Switch from '$lib/components/ui/switch.svelte';
+	import Textarea from '$lib/components/ui/textarea.svelte';
+	import JsonLink from '$lib/components/util/json-link.svelte';
+	import { db, decrypted, entries, user } from '$lib/pocketbase/index.svelte';
 
 	const md = new MediaQuery('(min-width: 768px)');
 

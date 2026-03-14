@@ -1,9 +1,10 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import Button from '../ui/button.svelte';
 	import { Check } from 'lucide-svelte';
 	import { Circle } from 'svelte-loading-spinners';
-	import { MediaQuery } from 'svelte/reactivity';
+
+	import Button from '../ui/button.svelte';
+
+	import type { Snippet } from 'svelte';
 
 	let {
 		title,
@@ -28,8 +29,6 @@
 		await onSave?.();
 		saving = false;
 	}
-
-	const sm = new MediaQuery('(min-width: 640px)');
 </script>
 
 <div class={['flex', vertical ? 'flex-col gap-4' : 'flex-row items-center gap-1']}>

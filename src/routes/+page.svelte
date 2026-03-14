@@ -1,11 +1,20 @@
 <script>
+	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
+
+	import { Dialog } from 'bits-ui';
+	import { theme } from 'mode-watcher';
+
 	import FlexThin from '$lib/components/stacks/flex-thin.svelte';
 	import Button from '$lib/components/ui/button.svelte';
+	import Input from '$lib/components/ui/input.svelte';
 	import { db, user } from '$lib/pocketbase/index.svelte';
-	import screenshotLight from '$assets/screenshot-light.png';
+
 	import screenshotDark from '$assets/screenshot-dark.png';
-	import { theme } from 'mode-watcher';
+	import screenshotLight from '$assets/screenshot-light.png';
+
+	let username = $state('');
+	let password = $state('');
 </script>
 
 <div class="flex w-screen justify-center">
@@ -30,14 +39,47 @@
 					<Button style="secondary" onclick={db.logOut} label="Sign Out" />
 				</FlexThin>
 			{:else}
-				<Button
-					onclick={() => {
-						db.loginInWithGoogle().then(() => {
-							goto('/app', { replaceState: true });
-						});
-					}}
-					label="Sign In With Google"
-				/>
+				<FlexThin>
+					<Button
+						onclick={() => {
+							db.loginInWithGoogle().then(() => {
+								goto('/app', { replaceState: true });
+							});
+						}}
+						label="Sign In With Google"
+					/>
+					{#if dev}
+						<Dialog.Root>
+							<Dialog.Trigger
+								><Button style="secondary" onclick={() => {}} label="Test" /></Dialog.Trigger
+							>
+							<Dialog.Portal>
+								<Dialog.Content
+									class="bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 border-border fixed top-[50%] left-[50%] z-50 flex h-max max-h-[80vh] w-full max-w-xl translate-x-[-50%] translate-y-[-50%]  flex-col gap-4 overflow-hidden rounded-lg border px-7 py-5 pb-8 shadow-xs outline-hidden"
+								>
+									<div class="flex items-center">
+										<div class="w-24">Username</div>
+										<div class="grow">
+											<Input bind:value={username} fullWidth />
+										</div>
+									</div>
+									<div class="flex items-center">
+										<div class="w-24">Password</div>
+										<div class="grow">
+											<Input bind:value={password} fullWidth type="password" />
+										</div>
+									</div>
+									<Button
+										onclick={() => {
+											db.loginWithPassword(username, password);
+										}}
+										label="Sign In"
+									/>
+								</Dialog.Content>
+							</Dialog.Portal>
+						</Dialog.Root>
+					{/if}
+				</FlexThin>
 			{/if}
 			<a href="https://github.com/isaxk/dialock" class="text-foreground/80 block pt-2 underline"
 				>View on GitHub {theme.current}</a

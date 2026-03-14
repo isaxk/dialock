@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { decrypted, entries } from '$lib/pocketbase/index.svelte';
-	import { calculateStreak } from '$lib/utils';
 	import { Dialog } from 'bits-ui';
 	import dayjs from 'dayjs';
+
+	import { decrypted, entries } from '$lib/pocketbase/index.svelte';
+	import { calculateStreak } from '$lib/utils';
 
 	import EntryStreak from '../diary-view/entry-streak.svelte';
 	import EntryDialog from '../ui/entry-dialog.svelte';

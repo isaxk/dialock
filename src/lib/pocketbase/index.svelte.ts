@@ -1,16 +1,21 @@
-import PocketBase from 'pocketbase';
-import type { UsersRecord } from './types';
-import { decryptDiary, deriveKey, encryptDiary } from '$lib/crypto';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import { SvelteMap } from 'svelte/reactivity';
-import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
-import type { EntriesStoreItem } from '$lib/types/types';
-import { recoveringBackup, todayLoading, value } from '$lib/utils/state.svelte';
 import { goto } from '$app/navigation';
 import { page } from '$app/state';
+
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import PocketBase from 'pocketbase';
+import { SvelteMap } from 'svelte/reactivity';
+
+import { decryptDiary, deriveKey, encryptDiary } from '$lib/crypto';
+import type { EntriesStoreItem } from '$lib/types/types';
+import { recoveringBackup, todayLoading, value } from '$lib/utils/state.svelte';
+
 import { checkForBackUps, clearBackups } from './autosave-backup';
+
+import type { UsersRecord } from './types';
+
+import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
 
 const pb = new PocketBase(PUBLIC_POCKETBASE_URL);
 
@@ -18,8 +23,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 async function createOrUpdateEntry(value: string, manualDate?: string) {
-	console.log('createOrUpdateEntry');
-	console.log(user.current, password.current);
 	if (!user.current || !password.current) return;
 
 	const timezone = user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London';
@@ -45,7 +48,7 @@ async function createOrUpdateEntry(value: string, manualDate?: string) {
 			cipher_text: ctHex,
 			updated: dayjs().toISOString()
 		});
-		console.log('existing', existing);
+
 		todayLoading.current = false;
 		decrypted.set(existing.id, value);
 		return data;
@@ -57,7 +60,6 @@ async function createOrUpdateEntry(value: string, manualDate?: string) {
 			created: dayjs(manualDate).toISOString() ?? dayjs().toISOString(),
 			updated: dayjs().toISOString()
 		});
-		console.log('new', data);
 
 		entries.current = [
 			...(entries.current ?? []),
@@ -217,12 +219,16 @@ export const db = {
 			}
 		}
 
+		console.log(Array.from(decrypted.entries()));
+
+		console.log(entries.current);
+
 		value.current = user.current?.entry_template ?? '';
 
 		if (entries.current.length > 0) {
 			try {
 				const v = decrypted.get(entries.current[0].id);
-				if (v) {
+				if (v || v === '') {
 					if (incorrectPassword.current) return;
 					diaryUnlocked.current = true;
 					password.current = pass;
@@ -244,8 +250,6 @@ export const db = {
 
 		const backupResponse = checkForBackUps(entries.current, user.current?.time_zone);
 
-		console.log('backupResponse', backupResponse);
-
 		await Promise.all(
 			backupResponse.map(async (backup) => {
 				const result = await createOrUpdateEntry(backup.content, backup.date);
@@ -258,7 +262,10 @@ export const db = {
 		recoveringBackup.current = false;
 
 		if (entries.current && entries.current?.find((entry) => entry.today)?.id) {
-			value.current = decrypted.get(entries.current.find((entry) => entry.today)!.id);
+			value.current =
+				decrypted.get(entries.current.find((entry) => entry.today)!.id) ??
+				user.current?.entry_template ??
+				'';
 		}
 
 		goto(page.data.afterUnlock ?? '/app/diary');

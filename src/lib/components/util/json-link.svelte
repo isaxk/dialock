@@ -1,9 +1,11 @@
 <script lang="ts">
-	import dayjs from 'dayjs';
-	import { tick, type Snippet } from 'svelte';
-	import { derived } from 'svelte/store';
+	import { type Snippet } from 'svelte';
 
-	let { json, children, fileName }: { json?: any; children: Snippet; fileName?: string } = $props();
+	let {
+		json,
+		children,
+		fileName
+	}: { json?: { date: string; text: string }[]; children: Snippet; fileName?: string } = $props();
 
 	let parsedJson = $state(json ?? null);
 

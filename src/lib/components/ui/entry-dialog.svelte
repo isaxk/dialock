@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { Dialog } from 'bits-ui';
 	import { X } from 'lucide-svelte';
-	import type { Snippet } from 'svelte';
-	import { render } from 'svelte/server';
+
 	import EntryStreak from '../diary-view/entry-streak.svelte';
+
+	import type { Snippet } from 'svelte';
 
 	let {
 		title,

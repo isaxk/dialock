@@ -1,13 +1,12 @@
 <script lang="ts">
-	import Input from '$lib/components/ui/input.svelte';
+	import { Dialog } from 'bits-ui';
+	import dayjs from 'dayjs';
 	import { Expand, Search } from 'lucide-svelte';
 
-	import { decrypted, entries } from '$lib/pocketbase/index.svelte';
-
 	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
-	import dayjs from 'dayjs';
-	import { Dialog } from 'bits-ui';
 	import EntryDialog from '$lib/components/ui/entry-dialog.svelte';
+	import Input from '$lib/components/ui/input.svelte';
+	import { decrypted, entries } from '$lib/pocketbase/index.svelte';
 	import { calculateStreak } from '$lib/utils';
 
 	let q = $state('');

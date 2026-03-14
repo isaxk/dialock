@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { Accordion } from 'bits-ui';
-	import DiaryEntry from '$lib/components/diary-view/diary-entry.svelte';
-
-	import TodayEntry from '$lib/components/diary-view/today-entry.svelte';
-	import { db, diaryUnlocked, entries, user } from '$lib/pocketbase/index.svelte';
-	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
-	import { groupByMonth } from '$lib/utils';
+
+	import { Accordion } from 'bits-ui';
 	import dayjs from 'dayjs';
-	import Button from '$lib/components/ui/button.svelte';
 	import { Plane } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+
+	import DiaryEntry from '$lib/components/diary-view/diary-entry.svelte';
+	import TodayEntry from '$lib/components/diary-view/today-entry.svelte';
+	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
+	import { diaryUnlocked, entries, user } from '$lib/pocketbase/index.svelte';
+	import { groupByMonth } from '$lib/utils';
 
 	let accordionVal = $state('today');
 
@@ -55,9 +55,10 @@
 		{/if}
 		<Accordion.Root bind:value={accordionVal} type="single" class="flex h-full flex-col">
 			<TodayEntry />
+
 			{#each groupByMonth(entries.current
 					.filter((entry) => !entry.today)
-					.toReversed()) as group, i (group.month)}
+					.toReversed()) as group (group.month)}
 				{#if dayjs().month() !== dayjs(group.entries[0].created).month()}
 					<div class="pt-10"></div>
 					<div

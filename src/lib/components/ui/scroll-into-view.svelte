@@ -6,8 +6,6 @@
 	function isElementInViewport(el: HTMLElement) {
 		var rect = el.getBoundingClientRect();
 
-		console.log(rect.top);
-
 		if (rect.top <= 150) {
 			return false;
 		}

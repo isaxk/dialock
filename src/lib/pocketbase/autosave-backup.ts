@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+
 import type { EntriesRecord } from './types';
 
 const KEY = 'autosave-backups-v1';
@@ -54,12 +55,11 @@ export function saveBackUp(date: string, content: string) {
 	const existing = localStorage.getItem(KEY);
 	const parsed = existing ? JSON.parse(existing) : [];
 
-	console.log(parsed);
 	const map = new Map(Array.isArray(parsed) ? parsed.map((p) => [p.date, p]) : []);
 	const updated = dayjs().toISOString();
 	const backup: BackUp = { date, content, updated };
 	map.set(date, backup);
-	console.log(Array.from(map.values()));
+
 	localStorage.setItem(KEY, JSON.stringify(Array.from(map.values())));
 }
 

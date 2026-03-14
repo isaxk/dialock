@@ -1,10 +1,14 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-	import { areAdjacentDays, calculateStreak } from '$lib/utils';
+
 	import { decrypted, entries, user } from '$lib/pocketbase/index.svelte';
+	import type { EntriesStoreItem } from '$lib/types/types';
+	import { calculateStreak } from '$lib/utils';
+
+	import ScrollIntoView from '../ui/scroll-into-view.svelte';
+
 	import EntryAccItem from './entry-acc-item.svelte';
 	import EntryStreak from './entry-streak.svelte';
-	import type { EntriesStoreItem } from '$lib/types/types';
 
 	let { entry, stickyWithMonth = false }: { entry: EntriesStoreItem; stickyWithMonth?: boolean } =
 		$props();
@@ -28,7 +32,8 @@
 		<EntryStreak {streak} />
 	{/snippet}
 	{#snippet content()}
-		<div class="p-5 px-3 pt-2">
+		<ScrollIntoView />
+		<div class="p-5 px-3 pt-2 font-serif whitespace-break-spaces">
 			{decryptedValue}
 		</div>
 	{/snippet}

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import clsx from 'clsx';
 	import { AlertTriangle, Flame } from 'lucide-svelte';
 
 	let { streak, style = 'past' }: { streak: number; style?: 'at-risk' | 'past' | 'secured' } =

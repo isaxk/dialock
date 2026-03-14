@@ -1,7 +1,10 @@
-import type { LayoutLoad } from './$types';
-import { PUBLIC_POSTHOG_KEY } from '$env/static/public';
 import { browser } from '$app/environment';
+
 import posthog from 'posthog-js';
+
+import type { LayoutLoad } from './$types';
+
+import { PUBLIC_POSTHOG_KEY } from '$env/static/public';
 
 export const ssr = false;
 
