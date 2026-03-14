@@ -63,7 +63,7 @@
 					{#if dayjs().month() !== dayjs(group.entries[0].created).month()}
 						<div class="pt-10"></div>
 						<div
-							class="bg-background pt-safe-top pointer-events-none sticky top-0 z-10 sm:top-[calc(64px+env(safe-area-inset-top))] sm:pt-3"
+							class="bg-background top-safe-top pointer-events-none sticky z-10 sm:top-[calc(64px+env(safe-area-inset-top))] sm:pt-3"
 						>
 							<div class="shadow-background p-3 text-lg font-semibold shadow-md">
 								{group.month}

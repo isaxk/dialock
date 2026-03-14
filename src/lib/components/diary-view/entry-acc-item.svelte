@@ -44,7 +44,7 @@
 	<Accordion.Header
 		bind:ref={headerElm}
 		class={[
-			'bg-background pt-safe-top shadow-background sticky top-0 z-0 w-full data-[state=open]:z-20 data-[state=open]:shadow-lg sm:top-[calc(54px+env(safe-area-inset-top))] sm:p-0'
+			'bg-background shadow-background top-safe-top sticky z-0 w-full data-[state=open]:z-20 data-[state=open]:shadow-lg sm:top-[calc(54px+env(safe-area-inset-top))] sm:p-0'
 		]}
 	>
 		<Accordion.Trigger
