@@ -12,8 +12,11 @@
 	import Avatar from '$lib/components/ui/avatar.svelte';
 	import { diaryUnlocked, entries, user } from '$lib/pocketbase/index.svelte';
 	import { groupByMonth } from '$lib/utils';
+	import { MediaQuery } from 'svelte/reactivity';
 
 	let accordionVal = $state('today');
+
+	const sm = new MediaQuery('(min-width: 640px)');
 
 	onMount(() => {
 		if (!diaryUnlocked.current) {
@@ -24,16 +27,18 @@
 
 <ScreenContainer>
 	{#if entries.current}
-		<div class="flex items-center gap-3 p-3">
-			{#if user.current?.avatar}
-				<Avatar user={user.current.id} avatar={user.current.avatar} />
-			{/if}
-			<!-- {#if !showMainHeader} -->
-			<div class="text-md">
-				<span class="font-semibold">{user.current?.name}</span>'s diary
+		{#if !sm.current}
+			<div class="flex items-center gap-3 p-3">
+				{#if user.current?.avatar}
+					<Avatar user={user.current.id} avatar={user.current.avatar} />
+				{/if}
+				<!-- {#if !showMainHeader} -->
+				<div class="text-md">
+					<span class="font-semibold">{user.current?.name}</span>'s diary
+				</div>
+				<!-- {/if} -->
 			</div>
-			<!-- {/if} -->
-		</div>
+		{/if}
 
 		{#if user.current?.time_zone && user.current?.time_zone !== dayjs.tz.guess()}
 			<div class="p-2">
