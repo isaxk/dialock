@@ -47,7 +47,7 @@
 						<Plane size={16} />
 					</div>
 					<div class="grow">
-						<div class="text-sm font-semibold">Travel mode enabled</div>
+						<div class="text-sm font-semibold">Travel mode</div>
 
 						<div class="flex items-center gap-2">
 							<div class="text-foreground/80 grow text-xs">

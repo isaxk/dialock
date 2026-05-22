@@ -59,11 +59,11 @@
 		<a
 			href="/app/diary"
 			class={[
-				'hover:text-border dark:hover:text-primary/85 flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
+				'flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
 
 				page.url.pathname === '/app/diary'
 					? 'border-outline bg-primary text-background dark:text-primary dark:bg-transparent'
-					: 'border-transparent'
+					: 'hover:text-border dark:hover:text-primary/85 border-transparent'
 			]}
 		>
 			<GalleryVertical size={16} />
@@ -72,11 +72,11 @@
 		<a
 			href="/app/calendar/{dayjs().year()}/{dayjs().month() + 1}"
 			class={[
-				'hover:text-border dark:hover:text-primary/85 flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
+				'flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
 
 				page.url.pathname.includes('/app/calendar')
 					? 'border-outline bg-primary text-background dark:text-primary dark:bg-transparent'
-					: 'border-transparent'
+					: 'hover:text-border dark:hover:text-primary/85 border-transparent'
 			]}
 		>
 			<CalendarIcon size={16} />
@@ -85,11 +85,11 @@
 		<a
 			href="/app/search"
 			class={[
-				'hover:text-border dark:hover:text-primary/85 flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
+				'flex h-12 w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 text-xs transition-all sm:h-10 sm:w-16 sm:gap-0',
 
 				page.url.pathname === '/app/search'
 					? 'border-outline bg-primary text-background dark:text-primary dark:bg-transparent'
-					: 'border-transparent'
+					: 'hover:text-border dark:hover:text-primary/85 border-transparent'
 			]}
 		>
 			<Search size={16} />

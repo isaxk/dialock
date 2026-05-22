@@ -67,7 +67,7 @@
 	});
 </script>
 
-<EntryAccItem forceFullOpacity id="today">
+<EntryAccItem lockOpen forceFullOpacity id="today">
 	{#snippet header()}
 		<div class={['w-full text-left transition-all']}>
 			<div class="text-xl font-semibold">Today</div>
@@ -129,8 +129,9 @@
 		{#if value.current !== null && mounted}
 			<textarea
 				bind:this={textarea}
-				class="min-h-20 w-full resize-none px-3 py-2 font-serif outline-none"
+				class="-mt-2 w-full resize-none rounded-lg px-3 py-2 font-serif outline-none"
 				use:autosizeAction
+				autofocus
 				bind:value={value.current}
 				placeholder="Start writing your entry here..."
 				onkeyup={() => {

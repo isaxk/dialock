@@ -8,6 +8,7 @@
 		id,
 		header,
 		content,
+		lockOpen = false,
 		forceFullOpacity = false,
 		hideContent = false,
 		stickyWithMonth = false,
@@ -16,6 +17,7 @@
 		id: string;
 		header: Snippet<[boolean]>;
 		content: Snippet;
+		lockOpen?: boolean;
 		forceFullOpacity?: boolean;
 		hideContent?: boolean;
 		stickyWithMonth?: boolean;
@@ -39,7 +41,7 @@
 	});
 </script>
 
-<Accordion.Item value={id} class={['border-foreground/10 group flex-grow border-b']}>
+<Accordion.Item value={id} class={['border-foreground/10 group border-b']}>
 	<Accordion.Header
 		bind:ref={headerElm}
 		class={[
@@ -47,6 +49,7 @@
 		]}
 	>
 		<Accordion.Trigger
+			disabled={lockOpen}
 			{onmousemove}
 			class={[
 				'flex w-full items-center gap-3 px-3 py-5  transition-colors',
@@ -58,12 +61,14 @@
 			<div class="flex grow items-center gap-3">
 				{@render header(isSticky)}
 			</div>
-			<div class="transition-all group-data-[state=open]:rotate-180"><ChevronDown /></div>
+			{#if !lockOpen}
+				<div class="transition-all group-data-[state=open]:rotate-180"><ChevronDown /></div>
+			{/if}
 		</Accordion.Trigger>
 	</Accordion.Header>
 	<Accordion.Content forceMount={true}>
 		{#snippet child({ props, open })}
-			{#if open && !hideContent}
+			{#if (open || lockOpen) && !hideContent}
 				<div {...props} class="pt-2 pb-10">
 					{@render content()}
 				</div>

@@ -85,7 +85,7 @@
 	]}
 >
 	<div
-		class="border-foreground/30 pointer-events-auto mx-auto flex w-full max-w-screen-sm items-center gap-2.5 px-5 pb-4"
+		class="border-foreground/30 pointer-events-auto mx-auto flex min-h-20 w-full max-w-screen-sm items-center gap-2.5 px-5 pb-4"
 	>
 		<FlexThin center>
 			{#if entryTemplateValue !== user.current?.entry_template || nicknameValue !== user.current?.name}
