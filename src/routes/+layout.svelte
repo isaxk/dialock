@@ -4,11 +4,23 @@
 
 	import '../app.css';
 	import { db } from '$lib/pocketbase/index.svelte';
+	import { isIOS } from '$lib/utils/state.svelte';
+	import { AlertDialog } from 'bits-ui';
 
-	let { children } = $props();
+	let { children, data } = $props();
 
 	onMount(() => {
 		db.authStore();
+		if (
+			['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
+				navigator.platform
+			) ||
+			// iPad on iOS 13 detection
+			(navigator?.userAgent.includes('Mac') && 'ontouchend' in document)
+		) {
+			isIOS.current = true;
+		}
+		console.log(navigator.platform);
 	});
 </script>
 

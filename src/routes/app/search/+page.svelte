@@ -3,7 +3,7 @@
 	import dayjs from 'dayjs';
 	import { Expand, Search } from 'lucide-svelte';
 
-	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
+	import ScreenContainer from '$lib/components/ui/screen-container.svelte';
 	import EntryDialog from '$lib/components/ui/entry-dialog.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import { decrypted, entries } from '$lib/pocketbase/index.svelte';

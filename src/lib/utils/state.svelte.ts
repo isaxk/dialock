@@ -4,3 +4,4 @@ export const focused = $state({ current: false });
 export const todayLoading = $state({ current: false });
 export const recoveringBackup = $state({ current: false });
 export const value: { current: string | null } = $state({ current: null });
+export const isIOS = $state({ current: false });

@@ -22,60 +22,6 @@ const pb = new PocketBase(PUBLIC_POCKETBASE_URL);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-// async function createOrUpdateEntry(value: string, manualDate?: string) {
-// 	if (!user.current || !password.current) return;
-
-// 	const timezone = user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London';
-
-// 	todayLoading.current = true;
-
-// 	const key = await deriveKey(password.current, user.current.salt);
-// 	const { ivHex, ctHex } = await encryptDiary(key, value);
-// 	if (
-// 		(manualDate &&
-// 			entries.current?.find((entry) =>
-// 				dayjs(entry.created).tz(timezone).isSame(dayjs(manualDate), 'day')
-// 			)) ||
-// 		(!manualDate && entries.current?.find((entry) => entry.today))
-// 	) {
-// 		const existing = manualDate
-// 			? entries.current.find((entry) =>
-// 					dayjs(entry.created).tz(timezone).isSame(dayjs(manualDate), 'day')
-// 				)!
-// 			: entries.current.find((entry) => entry.today)!;
-// 		const data = await pb.collection('entries').update(existing.id, {
-// 			iv: ivHex,
-// 			cipher_text: ctHex,
-// 			updated: dayjs().toISOString()
-// 		});
-
-// 		todayLoading.current = false;
-// 		decrypted.set(existing.id, value);
-// 		return data;
-// 	} else {
-// 		const data = await pb.collection('entries').create({
-// 			user: user.current.id,
-// 			iv: ivHex,
-// 			cipher_text: ctHex,
-// 			created: dayjs(manualDate).toISOString() ?? dayjs().toISOString(),
-// 			updated: dayjs().toISOString()
-// 		});
-
-// 		entries.current = [
-// 			...(entries.current ?? []),
-// 			{
-// 				...data,
-// 				today: !manualDate || dayjs(data.created).tz(timezone).isSame(dayjs(), 'day'),
-// 				loading: false
-// 			}
-// 		];
-// 		todayLoading.current = false;
-
-// 		decrypted.set(data.id, value);
-
-// 		return data;
-// 	}
-// }
 
 async function updateEntry(id: string, ivHex: string, ctHex: string) {
 	if (!password.current || !user.current) return;
@@ -123,15 +69,18 @@ async function createOrUpdateEntryForDate(value: string, date?: string) {
 		todayLoading.current = true;
 	}
 
+	// Check if an entry exists for the specified date
 	const existing = date
 		? entries.current?.find((entry) => dayjs(entry.created).tz(timezone).isSame(dayjs(date), 'day'))
 		: entries.current?.find((entry) => entry.today);
-	if (existing) {
+
+	
+	if (existing) { // If the entry exists, update it
 		const data = await updateEntry(existing.id, ivHex, ctHex);
 		decrypted.set(existing.id, value);
 		todayLoading.current = false;
 		return data;
-	} else {
+	} else { // If the entry does not exist, create it
 		const data = await createEntry(ivHex, ctHex, date);
 		if (data) {
 			decrypted.set(data.id, value);
@@ -207,7 +156,7 @@ export const db = {
 			const timezone = user.current?.time_zone ?? dayjs.tz.guess() ?? 'Europe/London';
 			return pb
 				.collection('entries')
-				.getFullList(200, {
+				.getFullList({
 					sort: 'created'
 				})
 				.then(async (records) => {
@@ -256,6 +205,7 @@ export const db = {
 	},
 
 	createOrUpdateEntryForDate,
+	
 	unlockDiary: async (pass: string) => {
 		if (!user.current) return;
 		if (!entries.current || !pass) {

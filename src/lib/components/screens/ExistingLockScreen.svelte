@@ -5,9 +5,7 @@
 	import { recoveringBackup } from '$lib/utils/state.svelte';
 
 	import IconHeader from '../header/icon-header.svelte';
-	import FlexColThin from '../stacks/flex-col-thin.svelte';
-	import FlexColWide from '../stacks/flex-col-wide.svelte';
-	import FlexThin from '../stacks/flex-thin.svelte';
+
 	import Button from '../ui/button.svelte';
 	import Input from '../ui/input.svelte';
 	import Wiggler from '../ui/wiggler.svelte';
@@ -15,15 +13,14 @@
 	let value = $state('');
 </script>
 
-<form onsubmit={(e) => e.preventDefault()}>
-	<FlexColWide>
+<form class="flex flex-col gap-6" onsubmit={(e) => e.preventDefault()}>
 		<IconHeader
 			Icon={Lock}
 			title={user?.current?.name + "'s diary"}
 			description="End to end encryption"
 		/>
-		<FlexColThin center>
-			<FlexThin>
+		<div class="flex flex-col items-center gap-1">
+			<div class="flex gap-1">
 				<Input type="password" autofocus bind:value placeholder="Enter password" />
 				<Button
 					type="submit"
@@ -33,7 +30,7 @@
 					}}
 					label="Unlock"
 				/>
-			</FlexThin>
+			</div>
 			<div class="h-4">
 				{#if incorrectPassword.current}
 					<Wiggler message="Incorrect password" />
@@ -41,6 +38,5 @@
 					<div class="text-sm">Recovering local backup...</div>
 				{/if}
 			</div>
-		</FlexColThin>
-	</FlexColWide>
+		</div>
 </form>

@@ -18,11 +18,8 @@
 	import { onMount } from 'svelte';
 	import { MediaQuery, type SvelteMap } from 'svelte/reactivity';
 
-	import HeaderContainer from '$lib/components/header/header-container.svelte';
 	import SettingsItem from '$lib/components/settings/settings-item.svelte';
-	import FlexColWide from '$lib/components/stacks/flex-col-wide.svelte';
-	import FlexThin from '$lib/components/stacks/flex-thin.svelte';
-	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
+	import ScreenContainer from '$lib/components/ui/screen-container.svelte';
 	import Alert from '$lib/components/ui/alert.svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
@@ -87,7 +84,7 @@
 	<div
 		class="border-foreground/30 pointer-events-auto mx-auto flex min-h-20 w-full max-w-screen-sm items-center gap-2.5 px-5 pb-4"
 	>
-		<FlexThin center>
+		<div class="flex items-center gap-1">
 			{#if entryTemplateValue !== user.current?.entry_template || nicknameValue !== user.current?.name}
 				<Button
 					onclick={() => {
@@ -102,13 +99,13 @@
 				<Button type="link" href="/app/diary" icon={ArrowLeft} style="text" />
 			{/if}
 			<div class="text-xl font-semibold">Settings</div>
-		</FlexThin>
+		</div>
 	</div>
 </div>
 <div class="pt-safe-top"></div>
 
 <ScreenContainer>
-	<FlexColWide padding>
+	<div class="flex flex-col gap-6 pb-10 p-5">
 		<SettingsItem
 			onSave={async () => {
 				await db.updateEntryTemplate(entryTemplateValue);
@@ -287,5 +284,5 @@
 				</div>
 			</div>
 		</div>
-	</FlexColWide>
+	</div>
 </ScreenContainer>

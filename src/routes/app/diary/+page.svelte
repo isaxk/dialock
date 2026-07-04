@@ -8,7 +8,7 @@
 
 	import DiaryEntry from '$lib/components/diary-view/diary-entry.svelte';
 	import TodayEntry from '$lib/components/diary-view/today-entry.svelte';
-	import ScreenContainer from '$lib/components/stacks/screen-container.svelte';
+	import ScreenContainer from '$lib/components/ui/screen-container.svelte';
 	import Avatar from '$lib/components/ui/avatar.svelte';
 	import { diaryUnlocked, entries, user } from '$lib/pocketbase/index.svelte';
 	import { groupByMonth } from '$lib/utils';

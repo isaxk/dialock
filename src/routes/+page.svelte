@@ -2,19 +2,22 @@
 	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
 
-	import { Dialog } from 'bits-ui';
+	import { AlertDialog, Dialog } from 'bits-ui';
 	import { theme } from 'mode-watcher';
 
-	import FlexThin from '$lib/components/stacks/flex-thin.svelte';
+
 	import Button from '$lib/components/ui/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import { db, user } from '$lib/pocketbase/index.svelte';
 
 	import screenshotDark from '$assets/screenshot-dark.png';
 	import screenshotLight from '$assets/screenshot-light.png';
+	import { isIOS } from '$lib/utils/state.svelte';
+	import { ArrowDownIcon } from 'lucide-svelte';
 
 	let username = $state('');
 	let password = $state('');
+	let opened = $state(false);
 </script>
 
 <div class="flex w-screen justify-center">
@@ -34,20 +37,56 @@
 				</ul>
 			</div>
 			{#if user.current}
-				<FlexThin center>
+				<div class="flex gap-1 items-center">
 					<Button type="link" href="/app" label="Go to Diary" />
 					<Button style="secondary" onclick={db.logOut} label="Sign Out" />
-				</FlexThin>
+				</div>
 			{:else}
-				<FlexThin>
-					<Button
-						onclick={() => {
-							db.loginInWithGoogle().then(() => {
-								goto('/app', { replaceState: true });
-							});
-						}}
-						label="Sign In With Google"
-					/>
+				<div class="flex gap-1">
+					{#if isIOS.current}
+						<AlertDialog.Root bind:open={opened}>
+							<AlertDialog.Trigger><Button label="Get started" /></AlertDialog.Trigger>
+							<AlertDialog.Portal>
+								<AlertDialog.Overlay
+									class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-100 bg-black/80"
+								/>
+								<AlertDialog.Content
+									class="bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 border-border fixed top-[50%] left-[50%] z-100 flex h-max max-h-[80vh] w-full max-w-xl translate-x-[-50%] translate-y-[-50%]  flex-col gap-4 overflow-hidden rounded-lg border px-7 py-5 pb-8 shadow-xs outline-hidden"
+								>
+									<AlertDialog.Title class="text-xl font-semibold"
+										>Dialock works best when installed</AlertDialog.Title
+									>
+									<AlertDialog.Description class="text-md"
+										>Installing Dialock as a PWA will provide the best experience</AlertDialog.Description
+									>
+									<ol>
+										<li>1. Tap the three dots in the bottom right corner of the screen</li>
+										<li>2. Tap <span class="font-semibold">"Share"</span></li>
+										<li>
+											3. Scroll down and tap <span class="font-semibold">"Add to Home Screen"</span>
+										</li>
+										<li>
+											4. Tap <span class="font-semibold">"Add"</span>
+										</li>
+									</ol>
+								</AlertDialog.Content>
+							</AlertDialog.Portal>
+						</AlertDialog.Root>
+						{#if opened}
+							<div class="fixed right-10 bottom-0 z-[10000] text-red-500">
+								<ArrowDownIcon size={40} />
+							</div>
+						{/if}
+					{:else}
+						<Button
+							onclick={() => {
+								db.loginInWithGoogle().then(() => {
+									goto('/app', { replaceState: true });
+								});
+							}}
+							label="Sign In With Google"
+						/>
+					{/if}
 					{#if dev}
 						<Dialog.Root>
 							<Dialog.Trigger
@@ -79,7 +118,7 @@
 							</Dialog.Portal>
 						</Dialog.Root>
 					{/if}
-				</FlexThin>
+				</div>
 			{/if}
 			<a href="https://github.com/isaxk/dialock" class="text-foreground/80 block pt-2 underline"
 				>View on GitHub {theme.current}</a
