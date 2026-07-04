@@ -116,7 +116,7 @@
 				<Avatar user={user.current.id} avatar={user.current.avatar} />
 			{/if}
 			{#if !showMainHeader}
-				<div class="text-md" transition:fade={{ duration: 200 }}>
+				<div class="text-md">
 					<span class="font-semibold">{user.current.name}</span>'s diary
 				</div>
 			{/if}
@@ -144,65 +144,7 @@
 			</DropdownMenu.Root>
 		{/if}
 
-		<!-- {#if md.current || showMainHeader}
-		<div
-			transition:fly={{ x: 100, duration: 200 }}
-			class={[
-				!md.current &&
-					'border-border/60 absolute top-3 right-16 bottom-3 flex items-center border-r pr-3'
-			]}
-		>
-			<FlexWide center>
-				<Button
-					style="text"
-					size="xs"
-					type="link"
-					stack="vertical"
-					href="/app/settings"
-					icon={Settings2}
-					label="Settings"
-				/>
-				<Button
-					style="text"
-					size="xs"
-					stack="vertical"
-					onclick={db.lockDiary}
-					icon={Lock}
-					label="Lock"
-				/>
-				<Button
-					style="text"
-					size="xs"
-					stack="vertical"
-					onclick={db.logOut}
-					icon={LogOut}
-					label="Sign Out"
-				/>
-			</FlexWide>
-		</div>
-	{:else}{/if} -->
 
-		<!-- {#if !md.current}
-		{#if showMainHeader}
-			<Button
-				onclick={() => (showMainHeader = false)}
-				style="text"
-				size="xs"
-				stack="vertical"
-				icon={XIcon}
-				label="Close"
-			/>
-		{:else}
-			<Button
-				onclick={() => (showMainHeader = true)}
-				style="text"
-				size="xs"
-				stack="vertical"
-				icon={MenuIcon}
-				label="Menu"
-			/>
-		{/if}
-	{/if} -->
 	</HeaderContainer>
 {:else}
 	{@render tabs()}

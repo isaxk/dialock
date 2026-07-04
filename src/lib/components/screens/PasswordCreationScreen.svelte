@@ -30,7 +30,7 @@
 <form
 	class="flex flex-col items-center justify-center gap-6"
 	onsubmit={(e) => e.preventDefault()}
-	in:fade|global={{ duration: 200 }}
+
 >
 	<IconHeader
 		Icon={Lock}
